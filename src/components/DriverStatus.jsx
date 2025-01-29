@@ -22,6 +22,7 @@ function DriverStatus({ availabilityDate }) {
 			: bookings[activeBookingIndex].pickupDateTime;
 
 	useEffect(() => {
+		let intervalId;
 		async function getData() {
 			// const response = await getDriverAvailability(
 			// 	new Date(date).toISOString(),
@@ -41,8 +42,12 @@ function DriverStatus({ availabilityDate }) {
 			}
 		}
 		getData();
+
+		intervalId = setInterval(getData, 15000);
+
+		return () => clearInterval(intervalId);
 		// }, [date, isActiveTestMode]);
-	}, [date]);
+	}, []);
 
 	const status = {
 		1000: 'Start',
