@@ -51,8 +51,8 @@ function DriverStatus({ availabilityDate }) {
 		1003: 'FinishBreak',
 		3003: 'OnRoute',
 		3004: 'AtPickup',
-		3005: 'PassengerOnBoard',
-		3006: 'SoonToClear',
+		3005: 'POB',
+		3006: 'ST',
 		3007: 'Clear',
 		3008: 'NoJob',
 		2000: 'Accept',
@@ -92,7 +92,11 @@ function DriverStatus({ availabilityDate }) {
 						<>
 							<div
 								key={el?.userId}
-								className='bg-gray-200 flex justify-center w-full items-center mx-auto cursor-pointer gap-4 mb-2'
+								className=' flex justify-center w-full items-center mx-auto cursor-pointer gap-4 mb-2'
+								style={{
+									backgroundColor: el?.colourCode,
+									color: isLightColor(el?.colourCode) ? 'black' : 'white',
+								}}
 							>
 								<div className='w-full mx-auto flex gap-4 justify-center items-center'>
 									<p
