@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { driverShift } from '../utils/apiReq';
 import Loader from './Loader';
 import { useMediaQuery } from '@mui/material';
+import isLightColor from '../utils/isLight';
 
 function DriverStatus({ availabilityDate }) {
 	const [data, setData] = useState([]);
@@ -94,10 +95,17 @@ function DriverStatus({ availabilityDate }) {
 								className='bg-gray-200 flex justify-center w-full items-center mx-auto cursor-pointer gap-4 mb-2'
 							>
 								<div className='w-full mx-auto flex gap-4 justify-center items-center'>
+									<p
+										className={`text-sm w-6 h-6 text-center`}
+										style={{
+											backgroundColor: el?.colourCode,
+											color: isLightColor(el?.colourCode) ? 'black' : 'white',
+										}}
+									>
+										{el?.userId}
+									</p>
 									<div className='flex flex-col w-[60%] justify-center items-start'>
-										<p className={`text-[.75rem] w-6 h-6 text-center`}>
-											{el?.userId}
-										</p>
+										<p>{el?.fullname}</p>
 									</div>
 									<div
 										className={`text-sm text-white px-3 py-1 rounded ${
