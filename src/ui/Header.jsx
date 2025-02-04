@@ -123,7 +123,7 @@ const Navbar = () => {
 								: 'TEST MODE'}
 						</span>
 					</Link>
-					{/* Mobile Menu Toggle */}
+					{/* Mobile Menu Toggle Hamberger */}
 					{isAuth && (
 						<button
 							className='md:hidden block text-2xl focus:outline-none mr-2'
