@@ -24,7 +24,7 @@ function convertDateString(inputDateString) {
 	return outputDateString;
 }
 
-// this was needed when data was not mapped 
+// this was needed when data was not mapped
 // after replacement of context with redux use of this fn is not needed
 function filterData(data) {
 	return JSON.stringify({
