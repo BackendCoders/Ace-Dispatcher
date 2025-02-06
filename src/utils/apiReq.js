@@ -24,7 +24,7 @@ function convertDateString(inputDateString) {
 	return outputDateString;
 }
 
-// this was needed when data was not mapped 
+// this was needed when data was not mapped
 // after replacement of context with redux use of this fn is not needed
 function filterData(data) {
 	return JSON.stringify({
@@ -628,6 +628,20 @@ async function driverShift() {
 	return await handleGetReq(URL);
 }
 
+async function sendMsgToDriver(data) {
+	const URL = `${BASE}/api/DriverApp/SendMessageToDriver?driver=${
+		data.userId
+	}&message=${encodeURIComponent(data.message)}`;
+	return await handlePostReq(URL, {});
+}
+
+async function sendMsgToAllDrivers(data) {
+	const URL = `${BASE}/api/DriverApp/SendMessageToAllDrivers?message=${encodeURIComponent(
+		data.message
+	)}`;
+	return await handlePostReq(URL, {});
+}
+
 export {
 	getBookingData,
 	makeBooking,
@@ -658,4 +672,6 @@ export {
 	recordTurnDown,
 	sendPayReceipt,
 	driverShift,
+	sendMsgToDriver,
+	sendMsgToAllDrivers,
 };
