@@ -258,6 +258,7 @@ function Booking({ bookingData, id, onBookingUpload }) {
 		bookingData.pickupDateTime,
 		bookingData.passengers,
 		bookingData.scope,
+		bookingData.manuallyPriced,
 		dispatch,
 		id,
 	]);
