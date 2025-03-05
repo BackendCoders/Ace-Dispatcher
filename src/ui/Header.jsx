@@ -441,7 +441,7 @@ function RecordTurn({ setRecordTurnModal }) {
 					</LongButton>
 					<LongButton
 						color='bg-red-700'
-						onClick={() => setRecordTurnModal(false)} // Close modal on Cancel
+						onClick={() => setRecordTurnModal(false)} 
 					>
 						Cancel
 					</LongButton>
