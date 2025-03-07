@@ -18,6 +18,7 @@ import {
 	// changeActiveDate,
 	handleSearchBooking,
 	makeSearchInactive,
+	setSearchKeywords,
 	// setDateControl,
 	// makeSearchInactive,
 } from '../context/schedulerSlice';
@@ -441,7 +442,7 @@ function RecordTurn({ setRecordTurnModal }) {
 					</LongButton>
 					<LongButton
 						color='bg-red-700'
-						onClick={() => setRecordTurnModal(false)} 
+						onClick={() => setRecordTurnModal(false)}
 					>
 						Cancel
 					</LongButton>
@@ -494,6 +495,7 @@ function SearchModal({ setOpenSearch }) {
 			newinputData.phoneNumber ||
 			newinputData.details
 		) {
+			dispatch(setSearchKeywords(newinputData));
 			dispatch(handleSearchBooking(newinputData));
 			if (isMobile || isTablet) {
 				setActiveSectionMobileView('Scheduler');
