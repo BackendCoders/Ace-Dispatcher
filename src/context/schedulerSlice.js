@@ -37,7 +37,7 @@ const schedulerSlice = createSlice({
 		currentlySelectedBookingIndex: -1,
 		selectedDriver: null,
 		activeDate: new Date().toISOString(),
-		activeComplete: isMobile ? true : false,
+		activeComplete: isMobile ? true : true,
 		activeAllocate: true,
 		activeSearch: false,
 		activeSoftAllocate: false,
