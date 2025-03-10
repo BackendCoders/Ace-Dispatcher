@@ -229,6 +229,7 @@ function RepeatBooking({ onSet }) {
 						<option value='none'>None</option>
 						<option value='daily'>Daily</option>
 						<option value='weekly'>Weekly</option>
+						<option value='fortnightly'>Fortnightly</option>
 					</select>
 				</div>
 				{frequency === 'daily' ? null : (
