@@ -81,7 +81,7 @@ function setHeaders() {
 	const accessToken = localStorage.getItem('authToken');
 	if (!accessToken) return {};
 	return {
-		'accept': '*/*',
+		'Accept': '*/*',
 		'Authorization': `Bearer ${accessToken}`,
 		'Content-Type': 'application/json',
 		'Cache-Control': 'no-cache, no-store, must-revalidate',
@@ -646,6 +646,11 @@ async function sendMsgToAllDrivers(data) {
 	return await handlePostReq(URL, {});
 }
 
+async function sendQuotes(data) {
+	const URL = `${BASE}/api/bookings/SendQuote`
+	return await handlePostReq(URL, data)
+}
+
 export {
 	getBookingData,
 	makeBooking,
@@ -678,4 +683,5 @@ export {
 	driverShift,
 	sendMsgToDriver,
 	sendMsgToAllDrivers,
+	sendQuotes
 };

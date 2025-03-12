@@ -9,6 +9,7 @@ import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 
 // Context And Hooks imports for data flow and management
 import {
+	onSendQuoteBooking,
 	removeBooking,
 	updateValue,
 	updateValueSilentMode,
@@ -44,6 +45,7 @@ import {
 	getRefreshedBookings,
 	setDateControl,
 } from '../context/schedulerSlice';
+import SendQuoteModal from '../components/CustomDialogButtons/SendQuoteModal';
 
 function Booking({ bookingData, id, onBookingUpload }) {
 	// All Hooks and Contexts for the data flow and management
@@ -70,6 +72,7 @@ function Booking({ bookingData, id, onBookingUpload }) {
 	const phoneNumberRef = useRef(null);
 	const pickupDateTimeRef = useRef(null);
 	const [isQuoteDialogActive, setIsQuoteDialogActive] = useState(false);
+	const [isSendQuoteActive, setIsSendQuoteActive] = useState(false);
 	const [quote, setQuote] = useState(null);
 	const [formSubmitLoading, setFormSubmitLoading] = useState(false);
 	const isMobile = useMediaQuery('(max-width:640px)');
@@ -421,6 +424,16 @@ function Booking({ bookingData, id, onBookingUpload }) {
 		}
 	}
 
+	async function handleSendQuoteModal(selectedOptions) {
+		try {
+			console.log(selectedOptions)
+			 await dispatch(onSendQuoteBooking(id, selectedOptions));
+			 openSnackbar("Quote Sent Successfully", "success")
+		} catch (error) {
+			console.log(error)
+		}
+	}
+
 	if (!bookingData) return null;
 
 	return (
@@ -472,6 +485,10 @@ function Booking({ bookingData, id, onBookingUpload }) {
 							onClick={handleCoaButton}
 							setConfirmCoaModal={setConfirmCoaModal}
 						/>
+					</Modal>
+					<Modal open={isSendQuoteActive} setOpen={setIsSendQuoteActive}>
+					<SendQuoteModal onclick={handleSendQuoteModal} setIsSendQuoteActive={setIsSendQuoteActive} />
+
 					</Modal>
 					<SimpleSnackbar />
 				</>
@@ -989,7 +1006,8 @@ function Booking({ bookingData, id, onBookingUpload }) {
 					</div>
 
 					<div className='flex justify-between space-x-4'>
-						{currentUser?.roleId !== 3 && (
+					<div className='flex justify-start space-x-4'>
+					{currentUser?.roleId !== 3 && (
 							<button
 								onClick={() => setConfirmCoaModal(true)}
 								className='bg-muted text-primary-foreground text-white px-4 py-2 rounded-lg bg-orange-700'
@@ -998,6 +1016,17 @@ function Booking({ bookingData, id, onBookingUpload }) {
 								Cancel On Arrival
 							</button>
 						)}
+						{currentUser?.roleId !== 3 && (
+							<button
+								onClick={() => setIsSendQuoteActive(true)}
+								className='bg-muted text-primary-foreground px-4 py-2 rounded-lg bg-gray-100'
+								type='button'
+							>
+								Send Quote
+							</button>
+						)}
+					</div>
+						
 						<div className='flex justify-end space-x-4'>
 							<button
 								onClick={deleteForm}

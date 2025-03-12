@@ -1,7 +1,7 @@
 /** @format */
 
 import { createSlice } from '@reduxjs/toolkit';
-import { makeBooking, updateBooking } from './../utils/apiReq';
+import { makeBooking, sendQuotes, updateBooking } from './../utils/apiReq';
 import { formatDate } from './../utils/formatDate';
 import { handleSearchBooking } from './schedulerSlice';
 // Filter data to avoid undefined values and make the data structure consistent
@@ -216,6 +216,34 @@ export const onUpdateBooking = (itemIndex) => async (dispatch, getState) => {
 // Action Creator that will remove the booking from the booking form data
 export const removeBooking = (itemIndex) => (dispatch) => {
 	dispatch(endBooking({ itemIndex }));
+};
+
+export const onSendQuoteBooking = (itemIndex, selectedOptions) => async (dispatch, getState) => {
+	const targetBooking = getState().bookingForm.bookings[itemIndex];
+	// const activeTestMode = getState().bookingForm.isActiveTestMode;
+	// const response = await makeBooking(targetBooking, activeTestMode);
+	console.log("slice---",targetBooking);
+	const payload = {
+		"date": targetBooking?.pickupDateTime,
+		"pickup": `${targetBooking?.pickupAddress}, ${targetBooking?.pickupPostCode}`,
+		"vias": targetBooking?.vias,
+		"destination": `${targetBooking?.destinationAddress}, ${targetBooking?.destinationPostCode}`,
+		"passenger": targetBooking?.passengerName,
+		"passengers": targetBooking?.passengers,
+		"price": targetBooking?.price,
+		"phone": selectedOptions.textMessage || selectedOptions.both ? targetBooking?.phoneNumber : "",
+		"email": selectedOptions.email || selectedOptions.both ? targetBooking?.email : ""
+	  }
+	const response = await sendQuotes(payload);
+	if (response.status === 'success') {
+		dispatch(endBooking({ itemIndex }));
+		return { status: 'success' };
+	} else {
+		dispatch(
+			bookingFormSlice.actions.updateDataValue(itemIndex, 'isLoading', false)
+		);
+		return { status: 'error', message: response.message };
+	}
 };
 
 export const {
