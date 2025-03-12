@@ -414,7 +414,7 @@ function Booking({ bookingData, id, onBookingUpload }) {
 
 				const data = await deleteSchedulerBooking(reqData);
 				if (data.status === 'success') {
-					openSnackbar('COA done successfully', 'success');
+					dispatch(openSnackbar('COA done successfully', 'success'));
 					setConfirmCoaModal(false);
 					getRefreshedBookings();
 				}
@@ -428,7 +428,7 @@ function Booking({ bookingData, id, onBookingUpload }) {
 		try {
 			console.log(selectedOptions)
 			 await dispatch(onSendQuoteBooking(id, selectedOptions));
-			 openSnackbar("Quote Sent Successfully", "success")
+			 dispatch(openSnackbar("Quote Sent Successfully", "success"))
 		} catch (error) {
 			console.log(error)
 		}
