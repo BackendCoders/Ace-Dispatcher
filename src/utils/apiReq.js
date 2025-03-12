@@ -652,7 +652,7 @@ async function sendQuotes(data) {
 }
 
 async function textMessageDirectly(data) {
-	const URL = `${BASE}/api/SmsQue/SendText?message=${encodeURIComponent(data.message)}&telephone=${telephone}`;
+	const URL = `${BASE}/api/SmsQue/SendText?message=${encodeURIComponent(data.message)}&telephone=${data.telephone}`;
 	return await handlePostReq(URL, null)
 }
 
