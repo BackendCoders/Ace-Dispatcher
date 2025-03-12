@@ -1018,7 +1018,13 @@ function Booking({ bookingData, id, onBookingUpload }) {
 						)}
 						{currentUser?.roleId !== 3 && (
 							<button
-								onClick={() => setIsSendQuoteActive(true)}
+								onClick={() => {
+		                       if (bookingData?.phoneNumber || bookingData?.email) {
+			                   setIsSendQuoteActive(true);
+		                           } else {
+									dispatch(openSnackbar("Please fill phone or email", "error"))
+								   }
+	                               }}
 								className='bg-muted text-primary-foreground px-4 py-2 rounded-lg bg-gray-100'
 								type='button'
 							>

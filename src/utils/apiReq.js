@@ -651,6 +651,11 @@ async function sendQuotes(data) {
 	return await handlePostReq(URL, data)
 }
 
+async function textMessageDirectly(data) {
+	const URL = `${BASE}/api/SmsQue/SendText?message=${encodeURIComponent(data.message)}&telephone=${telephone}`;
+	return await handlePostReq(URL, null)
+}
+
 export {
 	getBookingData,
 	makeBooking,
@@ -683,5 +688,6 @@ export {
 	driverShift,
 	sendMsgToDriver,
 	sendMsgToAllDrivers,
-	sendQuotes
+	sendQuotes,
+	textMessageDirectly
 };
