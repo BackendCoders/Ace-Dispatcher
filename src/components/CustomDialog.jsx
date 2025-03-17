@@ -48,12 +48,13 @@ function CustomDialog({ closeDialog }) {
 		currentlySelectedBookingIndex: index,
 		activeSearch,
 		activeSearchResult,
+		actionLogsOpen,
 	} = useSelector((state) => state.scheduler);
 	const user = useAuth();
 	// console.log(user);
 	let data = {};
 	data = bookings[index];
-	if (activeSearch) data = activeSearchResult;
+	if (activeSearch || actionLogsOpen) data = activeSearchResult;
 
 	if (!data?.bookingId) return null;
 
