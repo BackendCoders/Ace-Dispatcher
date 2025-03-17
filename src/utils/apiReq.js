@@ -647,13 +647,20 @@ async function sendMsgToAllDrivers(data) {
 }
 
 async function sendQuotes(data) {
-	const URL = `${BASE}/api/bookings/SendQuote`
-	return await handlePostReq(URL, data)
+	const URL = `${BASE}/api/bookings/SendQuote`;
+	return await handlePostReq(URL, data);
 }
 
 async function textMessageDirectly(data) {
-	const URL = `${BASE}/api/SmsQue/SendText?message=${encodeURIComponent(data.message)}&telephone=${data.telephone}`;
-	return await handlePostReq(URL, null)
+	const URL = `${BASE}/api/SmsQue/SendText?message=${encodeURIComponent(
+		data.message
+	)}&telephone=${data.telephone}`;
+	return await handlePostReq(URL, null);
+}
+
+async function getBookingsLog() {
+	const URL = `${BASE}/api/Bookings/GetActionLogs`;
+	return await handleGetReq(URL);
 }
 
 export {
@@ -689,5 +696,6 @@ export {
 	sendMsgToDriver,
 	sendMsgToAllDrivers,
 	sendQuotes,
-	textMessageDirectly
+	textMessageDirectly,
+	getBookingsLog,
 };

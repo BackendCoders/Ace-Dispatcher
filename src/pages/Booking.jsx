@@ -426,11 +426,11 @@ function Booking({ bookingData, id, onBookingUpload }) {
 
 	async function handleSendQuoteModal(selectedOptions) {
 		try {
-			console.log(selectedOptions)
-			 await dispatch(onSendQuoteBooking(id, selectedOptions));
-			 dispatch(openSnackbar("Quote Sent Successfully", "success"))
+			console.log(selectedOptions);
+			await dispatch(onSendQuoteBooking(id, selectedOptions));
+			dispatch(openSnackbar('Quote Sent Successfully', 'success'));
 		} catch (error) {
-			console.log(error)
+			console.log(error);
 		}
 	}
 
@@ -486,9 +486,14 @@ function Booking({ bookingData, id, onBookingUpload }) {
 							setConfirmCoaModal={setConfirmCoaModal}
 						/>
 					</Modal>
-					<Modal open={isSendQuoteActive} setOpen={setIsSendQuoteActive}>
-					<SendQuoteModal onclick={handleSendQuoteModal} setIsSendQuoteActive={setIsSendQuoteActive} />
-
+					<Modal
+						open={isSendQuoteActive}
+						setOpen={setIsSendQuoteActive}
+					>
+						<SendQuoteModal
+							onclick={handleSendQuoteModal}
+							setIsSendQuoteActive={setIsSendQuoteActive}
+						/>
 					</Modal>
 					<SimpleSnackbar />
 				</>
@@ -723,7 +728,7 @@ function Booking({ bookingData, id, onBookingUpload }) {
 						/>
 					</div>
 
-					<div className='mb-2'>
+					<div className='grid grid-cols-1 md:grid-cols-2 gap-4 mb-2'>
 						<textarea
 							placeholder='Booking Details'
 							className='w-full bg-input text-foreground p-2 rounded-lg border border-border'
@@ -737,6 +742,64 @@ function Booking({ bookingData, id, onBookingUpload }) {
 								}
 							}}
 						></textarea>
+						<div className='flex-col justify-center items-center'>
+							<span
+								className={`${bookingData.isASAP ? 'text-[#228B22]' : ''} mr-2`}
+							>
+								Arrive By
+							</span>
+							<Switch
+								sx={{
+									'& .MuiSwitch-switchBase.Mui-checked': {
+										color: '#228B22', // Thumb color
+									},
+									'& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+										backgroundColor: '#228B22', // Track color
+									},
+								}}
+								checked={bookingData.arriveBy}
+								onChange={() => {
+									if (!bookingData.arriveBy) {
+										// Calculate new pickupDateTime
+										const currentDateTime = new Date(
+											bookingData.pickupDateTime
+										);
+										currentDateTime.setMinutes(
+											currentDateTime.getMinutes() + 5
+										);
+										const newPickupDateTime = formatDate(currentDateTime);
+
+										// Update arriveBy and pickupDateTime
+										updateData('arriveBy', true); // Set arriveBy to true
+										updateData('pickupDateTime', newPickupDateTime); // Update pickupDateTime
+									} else {
+										// Simply toggle off arriveBy without updating pickupDateTime
+										updateData('arriveBy', false);
+									}
+								}}
+							/>
+
+							{/* <span className=''>Arrive By Date/Time</span> */}
+
+							<input
+								required
+								type='datetime-local'
+								className='w-full bg-input text-foreground p-2 rounded-lg border border-border'
+								value={bookingData?.arriveByDateTime}
+								disabled={!bookingData.arriveBy}
+								onKeyDown={(e) => {
+									if (e.key === 'Enter') {
+										pickupRef.current.focus();
+										pickupRef.current.select();
+									}
+								}}
+								onChange={(e) => {
+									if (!isValidDate(e.target.value)) return;
+									updateData('arriveByDateTime', e.target.value);
+									return e.target.value;
+								}}
+							/>
+						</div>
 					</div>
 
 					<div className='mb-4'>
@@ -1006,33 +1069,35 @@ function Booking({ bookingData, id, onBookingUpload }) {
 					</div>
 
 					<div className='flex justify-between space-x-4'>
-					<div className='flex justify-start space-x-4'>
-					{currentUser?.roleId !== 3 && (
-							<button
-								onClick={() => setConfirmCoaModal(true)}
-								className='bg-muted text-primary-foreground text-white px-4 py-2 rounded-lg bg-orange-700'
-								type='button'
-							>
-								Cancel On Arrival
-							</button>
-						)}
-						{currentUser?.roleId !== 3 && (
-							<button
-								onClick={() => {
-		                       if (bookingData?.phoneNumber || bookingData?.email) {
-			                   setIsSendQuoteActive(true);
-		                           } else {
-									dispatch(openSnackbar("Please fill phone or email", "error"))
-								   }
-	                               }}
-								className='bg-muted text-primary-foreground px-4 py-2 rounded-lg bg-gray-100'
-								type='button'
-							>
-								Send Quote
-							</button>
-						)}
-					</div>
-						
+						<div className='flex justify-start space-x-4'>
+							{currentUser?.roleId !== 3 && (
+								<button
+									onClick={() => setConfirmCoaModal(true)}
+									className='bg-muted text-primary-foreground text-white px-4 py-2 rounded-lg bg-orange-700'
+									type='button'
+								>
+									Cancel On Arrival
+								</button>
+							)}
+							{currentUser?.roleId !== 3 && (
+								<button
+									onClick={() => {
+										if (bookingData?.phoneNumber || bookingData?.email) {
+											setIsSendQuoteActive(true);
+										} else {
+											dispatch(
+												openSnackbar('Please fill phone or email', 'error')
+											);
+										}
+									}}
+									className='bg-muted text-primary-foreground px-4 py-2 rounded-lg bg-gray-100'
+									type='button'
+								>
+									Send Quote
+								</button>
+							)}
+						</div>
+
 						<div className='flex justify-end space-x-4'>
 							<button
 								onClick={deleteForm}
