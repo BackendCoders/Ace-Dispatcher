@@ -11,13 +11,17 @@ export default function Logs() {
 			<div className='flex justify-start items-start gap-4 p-2'>
 				<button
 					onClick={() => setIsBookingLog(true)}
-					className={`${isBookingLogs ? 'text-blue-500' : ''} font-semibold`}
+					className={`${
+						isBookingLogs ? 'text-blue-500' : ''
+					} font-semibold transition-all duration-100`}
 				>
 					Booking Logs
 				</button>
 				<button
 					onClick={() => setIsBookingLog(false)}
-					className={`${isBookingLogs ? '' : 'text-blue-500'} font-semibold`}
+					className={`${
+						isBookingLogs ? '' : 'text-blue-500'
+					} font-semibold transition-all duration-100`}
 				>
 					Action Logs
 				</button>
