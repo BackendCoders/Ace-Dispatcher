@@ -15,9 +15,9 @@ export default function BookingsLog() {
 	// }, [dispatch]);
 	return (
 		<div className='p-2'>
-			<div className='flex justify-between items-center p-4'>
+			{/* <div className='flex justify-between items-center p-4'>
 				<h2 className='text-lg font-semibold'>Bookings Log</h2>
-			</div>
+			</div> */}
 			<div className='overflow-x-auto'>
 				<table className='min-w-full bg-white'>
 					<thead className='bg-gray-200 text-gray-600'>
