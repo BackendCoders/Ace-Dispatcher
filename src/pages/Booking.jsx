@@ -61,6 +61,7 @@ function Booking({ bookingData, id, onBookingUpload }) {
 
 	// All Local States and Hooks for ui and fligs
 	const [isAddVIAOpen, setIsAddVIAOpen] = useState(false);
+	const [arriveByFlag, setArriveByFlag] = useState(false);
 	const [isRepeatBookingModelActive, setIsRepeatBookingModelActive] =
 		useState(false);
 	const [isDriverModalActive, setDriverModalActive] = useState(false);
@@ -757,26 +758,8 @@ function Booking({ bookingData, id, onBookingUpload }) {
 										backgroundColor: '#228B22', // Track color
 									},
 								}}
-								checked={bookingData.arriveBy}
-								onChange={() => {
-									if (!bookingData.arriveBy) {
-										// Calculate new pickupDateTime
-										const currentDateTime = new Date(
-											bookingData.pickupDateTime
-										);
-										currentDateTime.setMinutes(
-											currentDateTime.getMinutes() + 5
-										);
-										const newPickupDateTime = formatDate(currentDateTime);
-
-										// Update arriveBy and pickupDateTime
-										updateData('arriveBy', true); // Set arriveBy to true
-										updateData('pickupDateTime', newPickupDateTime); // Update pickupDateTime
-									} else {
-										// Simply toggle off arriveBy without updating pickupDateTime
-										updateData('arriveBy', false);
-									}
-								}}
+								checked={arriveByFlag}
+								onChange={() => setArriveByFlag((prev) => !prev)}
 							/>
 
 							{/* <span className=''>Arrive By Date/Time</span> */}
@@ -785,8 +768,8 @@ function Booking({ bookingData, id, onBookingUpload }) {
 								required
 								type='datetime-local'
 								className='w-full bg-input text-foreground p-2 rounded-lg border border-border'
-								value={bookingData?.arriveByDateTime}
-								disabled={!bookingData.arriveBy}
+								value={bookingData?.arriveBy}
+								disabled={!arriveByFlag}
 								onKeyDown={(e) => {
 									if (e.key === 'Enter') {
 										pickupRef.current.focus();
@@ -795,7 +778,7 @@ function Booking({ bookingData, id, onBookingUpload }) {
 								}}
 								onChange={(e) => {
 									if (!isValidDate(e.target.value)) return;
-									updateData('arriveByDateTime', e.target.value);
+									updateData('arriveBy', e.target.value);
 									return e.target.value;
 								}}
 							/>

@@ -58,6 +58,7 @@ function filterData(data) {
 		updatedByName: data.updatedByName || '',
 		isASAP: data.isASAP || false,
 		manuallyPriced: data.manuallyPriced || false,
+		arriveBy: data.arriveBy || null,
 		// actionByUserId: data.actionByUserId || null,
 	});
 }
