@@ -831,6 +831,8 @@ function Booking({ bookingData, id, onBookingUpload }) {
 											const newFlag = !prev;
 											if (!newFlag) {
 												updateData('arriveBy', null); // Set arriveBy to null when switching off
+											} else {
+												updateData('arriveBy', formatDate(new Date()));
 											}
 											return newFlag;
 										});
