@@ -204,16 +204,19 @@ function Booking({ bookingData, id, onBookingUpload }) {
 			console.error('arriveBy is missing');
 			return;
 		}
+
+		// Make the booking quote request
 		const quote = await makeBookingQuoteRequest({
 			pickupPostcode: bookingData.pickupPostCode,
 			viaPostcodes: bookingData.vias.map((via) => via.postCode),
 			destinationPostcode: bookingData.destinationPostCode,
-			pickupDateTime: bookingData.pickupDateTime,
+			pickupDateTime: bookingData.arriveBy, // Initially pass arriveBy time
 			passengers: bookingData.passengers,
 			priceFromBase: bookingData.chargeFromBase,
 		});
+
 		if (quote.status === 'success') {
-			let totalDuration = quote?.totalMinutes; // Assuming duration is in minutes
+			let totalDuration = quote?.totalMinutes; // Duration in minutes
 
 			if (!totalDuration) {
 				console.error('Total duration is missing in quote response');
@@ -231,8 +234,18 @@ function Booking({ bookingData, id, onBookingUpload }) {
 			);
 
 			// Format pickupDate to ISO string (YYYY-MM-DDTHH:mm)
-			const formattedPickupDate = pickupDate.toISOString().slice(0, 16);
-			updateData('pickupDateTime', formattedPickupDate);
+			const formattedPickupDate = pickupDate.toLocaleString('en-GB', {
+				year: 'numeric',
+				month: '2-digit',
+				day: '2-digit',
+				hour: '2-digit',
+				minute: '2-digit',
+				hour12: false, // Ensures 24-hour format
+			});
+			console.log(formattedPickupDate);
+			const pickupISO = pickupDate.toISOString().slice(0, 16);
+			// Update pickupDateTime in state
+			updateData('pickupDateTime', pickupISO);
 		}
 	}
 
