@@ -233,19 +233,33 @@ function Booking({ bookingData, id, onBookingUpload }) {
 				arriveByDate.getTime() - totalDuration * 60000
 			);
 
-			// Format pickupDate to ISO string (YYYY-MM-DDTHH:mm)
-			const formattedPickupDate = pickupDate.toLocaleString('en-GB', {
-				year: 'numeric',
-				month: '2-digit',
-				day: '2-digit',
-				hour: '2-digit',
-				minute: '2-digit',
-				hour12: false, // Ensures 24-hour format
-			});
-			console.log(formattedPickupDate);
-			const pickupISO = pickupDate.toISOString().slice(0, 16);
-			// Update pickupDateTime in state
-			updateData('pickupDateTime', pickupISO);
+			if (isNaN(pickupDate.getTime())) {
+				console.error('Invalid calculated pickup date:', pickupDate);
+				return;
+			}
+
+			const isoPickupDate = pickupDate.toISOString().slice(0, 16);
+
+			const localPickupDate = pickupDate
+				.toLocaleString('en-GB', {
+					year: 'numeric',
+					month: '2-digit',
+					day: '2-digit',
+					hour: '2-digit',
+					minute: '2-digit',
+					hour12: false,
+				})
+				.replace(',', ''); // Removes the comma for clean formatting
+
+			console.log(
+				'ISO Pickup Time:',
+				isoPickupDate,
+				bookingData.pickupDateTime
+			);
+			console.log('Local Pickup Time (Display):', localPickupDate);
+
+			// Update state with both values
+			dispatch(updateValueSilentMode(id, 'pickupDateTime', isoPickupDate));
 		}
 	}
 
