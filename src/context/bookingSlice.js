@@ -49,9 +49,7 @@ const filterData = (data = {}) => ({
 	minutes: data.Minutes ?? 20,
 	isASAP: data.isASAP || false,
 	manuallyPriced: data.manuallyPriced || false,
-	arriveBy: data.arriveBy
-		? formatDate(new Date(data.arriveBy))
-		: formatDate(new Date()),
+	arriveBy: data.arriveBy ? formatDate(new Date(data.arriveBy)) : null,
 });
 
 const initialState = {
@@ -215,6 +213,7 @@ export const onUpdateBooking = (itemIndex) => async (dispatch, getState) => {
 	if (response.status === 'success') {
 		dispatch(endBooking({ itemIndex }));
 		dispatch(setCreateResponseArray(response.value?.res));
+		dispatch(getRefreshedBookingsLog());
 		if (activeSearch) {
 			dispatch(handleSearchBooking(searchkeywords));
 		}
