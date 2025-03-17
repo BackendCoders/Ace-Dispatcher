@@ -190,7 +190,7 @@ export const onCreateBooking = (itemIndex) => async (dispatch, getState) => {
 	if (response.status === 'success') {
 		console.log('create booking response----', response);
 		dispatch(endBooking({ itemIndex }));
-		dispatch(setCreateResponseArray(response.value?.res));
+		dispatch(setCreateResponseArray(response.value?.entrys));
 		dispatch(getRefreshedBookingsLog());
 		return { status: 'success' };
 	} else {

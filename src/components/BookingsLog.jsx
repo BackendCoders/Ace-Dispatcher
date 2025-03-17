@@ -1,14 +1,27 @@
 /** @format */
 
 // import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+	setActionLogsOpen,
+	setActiveSearchResult,
+	setActiveSearchResultClicked,
+} from '../context/schedulerSlice';
 // import { getRefreshedBookingsLog } from '../context/BookingLogSlice';
 
 export default function BookingsLog() {
-	// const dispatch = useDispatch();
+	const dispatch = useDispatch();
 	const { createResponseArray } = useSelector((state) => state.bookingForm);
-
+	const { activeSearchResults } = useSelector((state) => state.scheduler);
+	const [dialogOpen, setDialogOpen] = useState(false);
 	console.log('logs---', createResponseArray);
+
+	useEffect(() => {
+		if (activeSearchResults && !dialogOpen) {
+			dispatch(setActiveSearchResultClicked(null));
+		}
+	}, [activeSearchResults, dialogOpen, dispatch]);
 
 	// useEffect(() => {
 	// 	dispatch(getRefreshedBookingsLog());
@@ -35,6 +48,11 @@ export default function BookingsLog() {
 								<tr
 									key={index}
 									className={`hover:bg-gray-100 cursor-pointer`}
+									onClick={() => {
+										setDialogOpen(true);
+										dispatch(setActionLogsOpen(true));
+										dispatch(setActiveSearchResult(booking?.bookingId));
+									}}
 								>
 									<td className='border px-4 py-2 whitespace-nowrap'>
 										{new Date(booking?.date)

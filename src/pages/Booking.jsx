@@ -199,6 +199,43 @@ function Booking({ bookingData, id, onBookingUpload }) {
 		ref.current.select();
 	}
 
+	async function calculatePickup() {
+		if (!bookingData.arriveBy) {
+			console.error('arriveBy is missing');
+			return;
+		}
+		const quote = await makeBookingQuoteRequest({
+			pickupPostcode: bookingData.pickupPostCode,
+			viaPostcodes: bookingData.vias.map((via) => via.postCode),
+			destinationPostcode: bookingData.destinationPostCode,
+			pickupDateTime: bookingData.pickupDateTime,
+			passengers: bookingData.passengers,
+			priceFromBase: bookingData.chargeFromBase,
+		});
+		if (quote.status === 'success') {
+			let totalDuration = quote?.totalMinutes; // Assuming duration is in minutes
+
+			if (!totalDuration) {
+				console.error('Total duration is missing in quote response');
+				return;
+			}
+
+			totalDuration += 5; // Add 5 minutes buffer
+
+			// Convert arriveBy (ISO 8601 format) to Date object
+			const arriveByDate = new Date(bookingData.arriveBy);
+
+			// Subtract totalDuration (converted from minutes to milliseconds)
+			const pickupDate = new Date(
+				arriveByDate.getTime() - totalDuration * 60000
+			);
+
+			// Format pickupDate to ISO string (YYYY-MM-DDTHH:mm)
+			const formattedPickupDate = pickupDate.toISOString().slice(0, 16);
+			updateData('pickupDateTime', formattedPickupDate);
+		}
+	}
+
 	useEffect(() => {
 		async function getAccountListDetails() {
 			try {
@@ -744,31 +781,54 @@ function Booking({ bookingData, id, onBookingUpload }) {
 							}}
 						></textarea>
 						<div className='flex-col justify-center items-center'>
-							<span
-								className={`${bookingData.isASAP ? 'text-[#228B22]' : ''} mr-2`}
-							>
-								Arrive By
-							</span>
-							<Switch
-								sx={{
-									'& .MuiSwitch-switchBase.Mui-checked': {
-										color: '#228B22', // Thumb color
-									},
-									'& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
-										backgroundColor: '#228B22', // Track color
-									},
-								}}
-								checked={arriveByFlag}
-								onChange={() => setArriveByFlag((prev) => !prev)}
-							/>
+							<div className='flex justify-start items-center mb-2'>
+								<span
+									className={`${
+										bookingData.isASAP ? 'text-[#228B22]' : ''
+									} mr-2`}
+								>
+									Arrive By
+								</span>
+								<Switch
+									sx={{
+										'& .MuiSwitch-switchBase.Mui-checked': {
+											color: '#228B22', // Thumb color
+										},
+										'& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+											backgroundColor: '#228B22', // Track color
+										},
+									}}
+									checked={arriveByFlag}
+									onChange={() => {
+										setArriveByFlag((prev) => {
+											const newFlag = !prev;
+											if (!newFlag) {
+												updateData('arriveBy', null); // Set arriveBy to null when switching off
+											}
+											return newFlag;
+										});
+									}}
+								/>
 
-							{/* <span className=''>Arrive By Date/Time</span> */}
+								<div
+									className='px-3 bg-red-700 hover:bg-opacity-80 rounded-lg flex cursor-pointer'
+									onClick={calculatePickup}
+								>
+									<span
+										color='error'
+										className='text-white flex gap-2 px-3 py-2'
+										type='button'
+									>
+										<span>Calculate Pickup</span>
+									</span>
+								</div>
+							</div>
 
 							<input
 								required
 								type='datetime-local'
 								className='w-full bg-input text-foreground p-2 rounded-lg border border-border'
-								value={bookingData?.arriveBy}
+								value={bookingData?.arriveBy || ''}
 								disabled={!arriveByFlag}
 								onKeyDown={(e) => {
 									if (e.key === 'Enter') {
@@ -779,6 +839,7 @@ function Booking({ bookingData, id, onBookingUpload }) {
 								onChange={(e) => {
 									if (!isValidDate(e.target.value)) return;
 									updateData('arriveBy', e.target.value);
+									e.target.blur();
 									return e.target.value;
 								}}
 							/>
