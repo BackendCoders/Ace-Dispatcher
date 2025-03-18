@@ -652,6 +652,33 @@ async function sendQuotes(data) {
 	return await handlePostReq(URL, data);
 }
 
+async function getDuration(data) {
+	const URL = `${BASE}/api/Bookings/GetDuration?pickupDate=${
+		data?.pickupDate
+	}&pickupPostcode=${encodeURIComponent(
+		data?.pickupPostcode
+	)}&destinationPostcode=${data?.destinationPostcode}`;
+	try {
+		const response = await axios.get(URL, { headers: setHeaders() });
+		console.log(response);
+		if (response.status !== 200) throw new Error('Could not fetch duration');
+		sendLogs(
+			{
+				url: URL,
+				requestBody: data,
+				headers: setHeaders(),
+				response: response.data,
+			},
+			'info'
+		);
+		return response;
+	} catch (error) {
+		console.log(error);
+		sendLogs({ url: URL, error: error }, 'error');
+		return error;
+	}
+}
+
 async function textMessageDirectly(data) {
 	const URL = `${BASE}/api/SmsQue/SendText?message=${encodeURIComponent(
 		data.message
@@ -699,4 +726,5 @@ export {
 	sendQuotes,
 	textMessageDirectly,
 	getBookingsLog,
+	getDuration,
 };

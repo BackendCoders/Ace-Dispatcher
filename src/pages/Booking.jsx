@@ -20,6 +20,7 @@ import {
 	fireCallerEvent,
 	deleteSchedulerBooking,
 	getAccountList,
+	getDuration,
 } from '../utils/apiReq';
 
 // All local component utilitys
@@ -206,17 +207,14 @@ function Booking({ bookingData, id, onBookingUpload }) {
 		}
 
 		// Make the booking quote request
-		const quote = await makeBookingQuoteRequest({
+		const quote = await getDuration({
 			pickupPostcode: bookingData.pickupPostCode,
-			viaPostcodes: bookingData.vias.map((via) => via.postCode),
 			destinationPostcode: bookingData.destinationPostCode,
-			pickupDateTime: bookingData.arriveBy, // Initially pass arriveBy time
-			passengers: bookingData.passengers,
-			priceFromBase: bookingData.chargeFromBase,
+			pickupDate: bookingData.arriveBy, // Initially pass arriveBy time
 		});
 
-		if (quote.status === 'success') {
-			let totalDuration = quote?.totalMinutes; // Duration in minutes
+		if (quote.status === 200) {
+			let totalDuration = quote?.data; // Duration in minutes
 
 			if (!totalDuration) {
 				console.error('Total duration is missing in quote response');
@@ -238,28 +236,30 @@ function Booking({ bookingData, id, onBookingUpload }) {
 				return;
 			}
 
-			const isoPickupDate = pickupDate.toISOString().slice(0, 16);
+			// const isoPickupDate = pickupDate.toISOString().slice(0, 16);
 
-			const localPickupDate = pickupDate
-				.toLocaleString('en-GB', {
-					year: 'numeric',
-					month: '2-digit',
-					day: '2-digit',
-					hour: '2-digit',
-					minute: '2-digit',
-					hour12: false,
-				})
-				.replace(',', ''); // Removes the comma for clean formatting
+			// const localPickupDate = pickupDate
+			// 	.toLocaleString('en-GB', {
+			// 		year: 'numeric',
+			// 		month: '2-digit',
+			// 		day: '2-digit',
+			// 		hour: '2-digit',
+			// 		minute: '2-digit',
+			// 		hour12: false,
+			// 	})
+			// 	.replace(',', ''); // Removes the comma for clean formatting
 
-			console.log(
-				'ISO Pickup Time:',
-				isoPickupDate,
-				bookingData.pickupDateTime
-			);
-			console.log('Local Pickup Time (Display):', localPickupDate);
+			// console.log(
+			// 	'ISO Pickup Time:',
+			// 	isoPickupDate,
+			// 	bookingData.pickupDateTime
+			// );
+			// console.log('Local Pickup Time (Display):', localPickupDate);
 
 			// Update state with both values
-			dispatch(updateValueSilentMode(id, 'pickupDateTime', isoPickupDate));
+			dispatch(
+				updateValueSilentMode(id, 'pickupDateTime', formatDate(pickupDate))
+			);
 		}
 	}
 
@@ -868,7 +868,7 @@ function Booking({ bookingData, id, onBookingUpload }) {
 								onChange={(e) => {
 									if (!isValidDate(e.target.value)) return;
 									updateData('arriveBy', e.target.value);
-									e.target.blur();
+									if (e.inputType === 'insertText') e.target.blur();
 									return e.target.value;
 								}}
 							/>
