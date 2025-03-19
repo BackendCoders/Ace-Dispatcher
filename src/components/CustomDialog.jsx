@@ -579,9 +579,18 @@ function CustomDialog({ closeDialog }) {
 												{data.paymentStatus === 0 &&
 													user?.currentUser?.roleId !== 3 && (
 														<button
-															onClick={() =>
-																setOpenSmsDailogModal((prev) => !prev)
-															}
+															onClick={() => {
+																if (data.phoneNumber || data.email) {
+																	setOpenSmsDailogModal((prev) => !prev);
+																} else {
+																	dispatch(
+																		openSnackbar(
+																			'Phone or Email is required',
+																			'error'
+																		)
+																	);
+																}
+															}}
 															className='px-1 sm:px-3 py-1 text-white bg-green-500 hover:bg-opacity-80 rounded-lg text-[0.65rem] sm:text-[1rem]'
 														>
 															Send Payment Link
