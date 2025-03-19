@@ -420,24 +420,39 @@ function CustomDialog({ closeDialog }) {
 											Destination
 										</h3>
 									</div>
-									<div className='flex items-start mb-1 w-full'>
-										<p className='text-md font-medium pr-2 whitespace-nowrap w-[20%] flex justify-end items-end'>
-											To:
-										</p>
-										<span className='text-card dark:text-popover-foreground text-[1rem] w-[80%] flex justify-start items-start'>
-											<a
-												// href={generateRouteLink()}
-												href={`https://www.google.com/maps?q=${encodeURIComponent(
-													data.destinationPostCode
-												)}`}
-												target='_blank'
-												rel='noopener noreferrer'
-												className='text-blue-600'
-											>
-												{`${data.destinationAddress}, ${data.destinationPostCode}`}
-											</a>
-										</span>
+									<div className='flex justify-between items-center'>
+										<div className='flex items-start mb-1 w-[75%]'>
+											<p className='text-md font-medium pr-2 whitespace-nowrap w-[20%] flex justify-end items-end'>
+												To:
+											</p>
+											<span className='text-card dark:text-popover-foreground text-[1rem] w-[80%] flex justify-start items-start'>
+												<a
+													// href={generateRouteLink()}
+													href={`https://www.google.com/maps?q=${encodeURIComponent(
+														data.destinationPostCode
+													)}`}
+													target='_blank'
+													rel='noopener noreferrer'
+													className='text-blue-600'
+												>
+													{`${data.destinationAddress}, ${data.destinationPostCode}`}
+												</a>
+											</span>
+										</div>
+										<div className='flex justify-end items-start mb-1 w-[25%]'>
+											<p className='text-md font-medium pr-2 whitespace-nowrap flex justify-end items-end'>
+												Arrive By:
+											</p>
+											<span className='text-card dark:text-popover-foreground text-[1rem] flex justify-start items-start'>
+												{`${
+													data.arriveBy
+														? data.arriveBy?.split('T')[1].slice(0, 5)
+														: ''
+												}`}
+											</span>
+										</div>
 									</div>
+
 									{/* <BookingOption
 										text={`${data.destinationAddress}, ${data.destinationPostCode}`}
 										head='To'
