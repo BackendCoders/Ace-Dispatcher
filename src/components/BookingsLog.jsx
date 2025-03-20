@@ -8,6 +8,8 @@ import {
 	setActiveSearchResult,
 	setActiveSearchResultClicked,
 } from '../context/schedulerSlice';
+import CustomDialog from './CustomDialog';
+import Modal from './Modal';
 // import { getRefreshedBookingsLog } from '../context/BookingLogSlice';
 
 export default function BookingsLog() {
@@ -77,6 +79,14 @@ export default function BookingsLog() {
 					</tbody>
 				</table>
 			</div>
+			{dialogOpen && (
+				<Modal
+					open={dialogOpen}
+					setOpen={setDialogOpen}
+				>
+					<CustomDialog closeDialog={() => setDialogOpen(false)} />
+				</Modal>
+			)}
 		</div>
 	);
 }
