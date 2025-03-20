@@ -300,7 +300,13 @@ function CustomDialog({ closeDialog }) {
 
 						{user?.currentUser?.roleId !== 3 && (
 							<button
-								onClick={handleSendConfirmationText}
+								onClick={() => {
+									if (!data?.phoneNumber) {
+										dispatch(openSnackbar('Phone is required', 'error'));
+									} else {
+										handleSendConfirmationText();
+									}
+								}}
 								className={`px-3 py-2 text-white bg-blue-700 hover:bg-opacity-80 rounded-lg`}
 							>
 								Send Confirmation Text
