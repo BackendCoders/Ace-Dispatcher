@@ -33,6 +33,7 @@ import {
 	changeActiveDate,
 	completeActiveBookingStatus,
 	getRefreshedBookings,
+	setActionLogsOpen,
 	setActiveBookingIndex,
 	setActiveSearchResult,
 	setDateControl,
@@ -250,6 +251,10 @@ const AceScheduler = () => {
 		}
 		const refreshInterval = setInterval(helper, 10000);
 		return () => clearInterval(refreshInterval);
+	}, [dispatch]);
+
+	useEffect(() => {
+		dispatch(setActionLogsOpen(false));
 	}, [dispatch]);
 
 	const eventSettings = {

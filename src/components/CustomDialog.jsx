@@ -53,8 +53,12 @@ function CustomDialog({ closeDialog }) {
 	const user = useAuth();
 	// console.log(user);
 	let data = {};
-	data = bookings[index];
-	if (activeSearch || actionLogsOpen) data = activeSearchResult;
+
+	if (activeSearch || actionLogsOpen) {
+		data = activeSearchResult;
+	} else {
+		data = bookings[index];
+	}
 
 	if (!data?.bookingId) return null;
 
