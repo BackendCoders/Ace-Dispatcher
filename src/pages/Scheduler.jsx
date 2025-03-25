@@ -310,6 +310,15 @@ const AceScheduler = () => {
 	useEffect(() => {
 		onCreate(); // Call onCreate to scroll when the component mounts
 	}, []);
+
+	function toLocalISODateOnly(date) {
+		const year = date.getFullYear();
+		const month = String(date.getMonth() + 1).padStart(2, '0'); // Ensure 2-digit format
+		const day = String(date.getDate()).padStart(2, '0');
+
+		return `${year}-${month}-${day}`;
+	}
+
 	// console.log('active Date in Scheduler----', activeDate);
 	return (
 		<ProtectedRoute>
@@ -327,7 +336,13 @@ const AceScheduler = () => {
 				currentView={activeSearch ? 'Agenda' : 'Day'}
 				selectedDate={activeDate}
 				navigating={(args) => {
-					dispatch(setDateControl(new Date(args.currentDate).toISOString()));
+					const isoDateOnly = toLocalISODateOnly(new Date(args.currentDate));
+					dispatch(setDateControl(isoDateOnly));
+					console.log(
+						'scheduler date iso',
+						new Date(args.currentDate).toISOString()
+					);
+
 					dispatch(changeActiveDate(new Date(args.currentDate).toISOString()));
 				}}
 				eventSettings={eventSettings}
