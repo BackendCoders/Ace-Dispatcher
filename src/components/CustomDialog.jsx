@@ -881,7 +881,7 @@ const BookingOption = ({ text, head, link }) => {
 						{text}
 					</a>
 				) : head === 'Price' ? (
-					text + '.00'
+					text.toFixed(2, 0)
 				) : (
 					text
 				)}
