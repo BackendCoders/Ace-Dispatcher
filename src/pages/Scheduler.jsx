@@ -338,12 +338,7 @@ const AceScheduler = () => {
 				navigating={(args) => {
 					const isoDateOnly = toLocalISODateOnly(new Date(args.currentDate));
 					dispatch(setDateControl(isoDateOnly));
-					console.log(
-						'scheduler date iso',
-						new Date(args.currentDate).toISOString()
-					);
-
-					dispatch(changeActiveDate(new Date(args.currentDate).toISOString()));
+					dispatch(changeActiveDate(isoDateOnly));
 				}}
 				eventSettings={eventSettings}
 				eventRendered={onEventRendered}
