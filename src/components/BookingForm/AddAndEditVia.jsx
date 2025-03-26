@@ -42,7 +42,7 @@ const AddAndEditVia = ({ onSet }) => {
 
 	// This function updates the via point in the via list
 	function handleSetVias(viasArray) {
-		setVias(viasArray.map((via, index) => ({ ...via, viaSequence: index })));
+		setVias(viasArray?.map((via, index) => ({ ...via, viaSequence: index })));
 	}
 
 	// acts as an path between our global state and local state works only on saving of any event
@@ -140,8 +140,8 @@ function VIABar({ data, onEdit, isEditing, setEditingItem }) {
 	const [newPostcode, setNewPostcode] = useState(data.postCode);
 
 	useEffect(() => {
-		setNewAddress(data.address);
-		setNewPostcode(data.postCode);
+		setNewAddress(data?.address);
+		setNewPostcode(data?.postCode);
 	}, [data]);
 
 	// This function is used to edit the via point independently
@@ -167,7 +167,7 @@ function VIABar({ data, onEdit, isEditing, setEditingItem }) {
 				</div>
 			) : (
 				<span>
-					{data.address} {data.postCode}
+					{data?.address} {data?.postCode}
 				</span>
 			)}
 			<div className='space-x-2 m-auto'>

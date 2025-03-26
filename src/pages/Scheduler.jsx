@@ -181,11 +181,11 @@ const AceScheduler = () => {
 
 		if (args?.data?.scope === 4) {
 			const badgeColor =
-				args.data.paymentStatus === 0
+				args.data?.paymentStatus === 0
 					? 'red'
 					: args?.data?.paymentStatus === 2
 					? 'green'
-					: args.data.paymentStatus === 3
+					: args.data?.paymentStatus === 3
 					? 'orange'
 					: '';
 			const cardBadge = createBadge('Card', badgeColor);
@@ -270,16 +270,16 @@ const AceScheduler = () => {
 	const onEventClick = async (args) => {
 		if (activeSearch) {
 			// dispatch(setActiveSearchResult(args.event.bookingId, activeTestMode));
-			dispatch(setActiveSearchResult(args.event.bookingId));
+			dispatch(setActiveSearchResult(args?.event?.bookingId));
 		} else {
-			setSelectedBookingData(args.event);
-			dispatch(setActiveBookingIndex(args.event.bookingId));
+			setSelectedBookingData(args?.event);
+			dispatch(setActiveBookingIndex(args?.event?.bookingId));
 		}
 		setDialogOpen(true);
 	};
 
 	const createBookingOnTimeStamp = function (args) {
-		dispatch(createBookingFromScheduler(args.startTime));
+		dispatch(createBookingFromScheduler(args?.startTime));
 	};
 
 	// Create a ref for ScheduleComponent
@@ -312,7 +312,7 @@ const AceScheduler = () => {
 	}, []);
 
 	function toLocalISODateOnly(date) {
-		const year = date.getFullYear();
+		const year = date?.getFullYear();
 		const month = String(date.getMonth() + 1).padStart(2, '0'); // Ensure 2-digit format
 		const day = String(date.getDate()).padStart(2, '0');
 

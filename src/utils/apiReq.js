@@ -298,7 +298,7 @@ async function getAccountList() {
 	const data = await handleGetReq(URL);
 	if (data.status === 'success') {
 		const formatedData = Object.keys(data).map((el) => data[el]);
-		localStorage.setItem(
+		localStorage?.setItem(
 			'accounts',
 			JSON.stringify([{ accNo: 0, accountName: 'select-233' }, ...formatedData])
 		);
@@ -505,13 +505,13 @@ async function bookingFindByTerm(queryField) {
 async function bookingFindByBookings(data) {
 	const URL = `${BASE}/api/Bookings/FindBookings`;
 	const reqData = {
-		pickupAddress: data.pickupAddress || '',
-		pickupPostcode: data.pickupPostcode || '',
-		destinationAddress: data.destinationAddress || '',
-		destinationPostcode: data.destinationPostcode || '',
-		passenger: data.passenger || '',
-		phoneNumber: data.phoneNumber || '',
-		details: data.details || '',
+		pickupAddress: data?.pickupAddress || '',
+		pickupPostcode: data?.pickupPostcode || '',
+		destinationAddress: data?.destinationAddress || '',
+		destinationPostcode: data?.destinationPostcode || '',
+		passenger: data?.passenger || '',
+		phoneNumber: data?.phoneNumber || '',
+		details: data?.details || '',
 	};
 	const res = await handlePostReq(URL, reqData);
 	if (res.status === 'success')

@@ -14,15 +14,15 @@ function ErrorPage() {
 
 	const shouldReload =
 		error?.message &&
-		error.message.includes(
+		error?.message.includes(
 			"Cannot read properties of null (reading 'classList')"
 		);
 
 	useEffect(() => {
 		if (shouldReload) {
 			console.warn("Detected 'classList' error. Reloading page...");
-			dispatch(openSnackbar('Oops some error occur!', 'error'));
 			window.location.reload();
+			dispatch(openSnackbar('Oops some error occur!', 'error'));
 		}
 	}, [dispatch, shouldReload]);
 

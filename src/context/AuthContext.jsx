@@ -49,7 +49,7 @@ const AuthProvider = ({ children }) => {
 				setIsAuth(true);
 				setToken(data.token); // Assuming response contains a token
 				setUsername(credentials.username);
-				localStorage.setItem('userData', JSON.stringify(data));
+				localStorage?.setItem('userData', JSON.stringify(data));
 				getAccountList();
 				alert('Login successful');
 			} else {
@@ -125,10 +125,10 @@ const AuthProvider = ({ children }) => {
 
 	// Function to save token to local storage (optional)
 	const setToken = (token) => {
-		localStorage.setItem('authToken', token);
+		localStorage?.setItem('authToken', token);
 	};
 	function setUsername(username) {
-		localStorage.setItem('username', username);
+		localStorage?.setItem('username', username);
 	}
 
 	// Check if user is authenticated based on token or currentUser
@@ -198,7 +198,7 @@ const AuthProvider = ({ children }) => {
 					isAdmin: user.role === 1,
 				};
 				setCurrentUser(updatedUser);
-				localStorage.setItem('userData', JSON.stringify(updatedUser)); // Save with role
+				localStorage?.setItem('userData', JSON.stringify(updatedUser)); // Save with role
 			}
 		});
 	}

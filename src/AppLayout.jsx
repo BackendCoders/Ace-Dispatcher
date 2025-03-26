@@ -8,10 +8,10 @@ import CallerIdPopUp from './components/CallerIdPopUp';
 import { Provider } from 'react-redux';
 import store from './store';
 import Footer from './ui/Footer';
-import { checkPreviousLogs } from './utils/getLogs';
+// import { checkPreviousLogs } from './utils/getLogs';
 
 function AppLayout() {
-	checkPreviousLogs();
+	// checkPreviousLogs();
 	return (
 		<AuthProvider>
 			<BookingProvider>

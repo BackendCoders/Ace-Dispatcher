@@ -42,7 +42,7 @@ const Dragger = ({ items, setItems, Child }) => {
 	};
 
 	const handleEdit = (updatedItem) => {
-		const newItems = items.map((item) =>
+		const newItems = items?.map((item) =>
 			item.viaSequence === updatedItem.viaSequence ? updatedItem : item
 		);
 		setItems(newItems);
@@ -50,14 +50,14 @@ const Dragger = ({ items, setItems, Child }) => {
 	};
 
 	const handleTouchStart = (e) => {
-		setTouchStartX(e.touches[0].clientX);
-		setTouchStartY(e.touches[0].clientY);
+		setTouchStartX(e?.touches[0].clientX);
+		setTouchStartY(e?.touches[0].clientY);
 	};
 
 	const handleTouchMove = (e) => {
 		e.preventDefault();
-		const touchEndX = e.touches[0].clientX;
-		const touchEndY = e.touches[0].clientY;
+		const touchEndX = e?.touches[0].clientX;
+		const touchEndY = e?.touches[0].clientY;
 
 		if (
 			Math.abs(touchEndX - touchStartX) > 10 ||
@@ -72,18 +72,18 @@ const Dragger = ({ items, setItems, Child }) => {
 	const handleTouchEnd = (e, targetItem) => {
 		if (!draggingItem) return;
 
-		const touchEndX = e.changedTouches[0].clientX;
-		const touchEndY = e.changedTouches[0].clientY;
+		const touchEndX = e?.changedTouches[0].clientX;
+		const touchEndY = e?.changedTouches[0].clientY;
 
 		const targetElement = document.elementFromPoint(touchEndX, touchEndY);
-		const targetIndex = items.indexOf(targetItem);
+		const targetIndex = items?.indexOf(targetItem);
 
 		if (targetElement && targetIndex !== -1) {
-			const currentIndex = items.indexOf(draggingItem);
+			const currentIndex = items?.indexOf(draggingItem);
 			if (currentIndex !== -1) {
 				const newItems = [...items];
-				newItems.splice(currentIndex, 1);
-				newItems.splice(targetIndex, 0, draggingItem);
+				newItems?.splice(currentIndex, 1);
+				newItems?.splice(targetIndex, 0, draggingItem);
 				setItems(newItems);
 			}
 		}
@@ -94,7 +94,7 @@ const Dragger = ({ items, setItems, Child }) => {
 
 	return (
 		<div className='bg-white rounded-lg p-5 shadow-lg'>
-			{items.map((item, id) => (
+			{items?.map((item, id) => (
 				<div
 					key={id}
 					className={`mt-4 border border-gray-300 flex justify-between cursor-move bg-white items-center rounded-lg p-4 mb-2 shadow-sm ${
@@ -114,10 +114,10 @@ const Dragger = ({ items, setItems, Child }) => {
 					<Child
 						data={item}
 						onEdit={handleEdit}
-						isEditing={editingItem?.viaSequence === item.viaSequence}
+						isEditing={editingItem?.viaSequence === item?.viaSequence}
 						setEditingItem={setEditingItem}
 					/>
-					<button onClick={() => handleDelete(item.viaSequence)}>
+					<button onClick={() => handleDelete(item?.viaSequence)}>
 						<CancelIcon fontSize='5px' />
 					</button>
 				</div>
