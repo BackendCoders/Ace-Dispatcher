@@ -1,4 +1,5 @@
 {
+	"manifest_version": 3,
 	"short_name": "Ace Taxis PWA",
 	"name": "Ace Taxis",
 	"description": "Progressive Web App for Ace Taxis",
@@ -18,5 +19,13 @@
 			"sizes": "512x512",
 			"type": "image/png"
 		}
-	]
+	],
+	"permissions": ["browsingData", "storage"],
+	"background": {
+		"service_worker": "background.js"
+	},
+	"action": {
+		"default_popup": "popup.html",
+		"default_icon": "/logo.png"
+	}
 }
