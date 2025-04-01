@@ -49,9 +49,7 @@ const filterData = (data = {}) => ({
 	minutes: data.Minutes ?? 20,
 	isASAP: data.isASAP || false,
 	manuallyPriced: data.manuallyPriced || false,
-	arriveBy: data.arriveBy
-		? formatDate(new Date(data.arriveBy))
-		: null,
+	arriveBy: data.arriveBy ? formatDate(new Date(data.arriveBy)) : null,
 });
 
 const initialState = {
@@ -64,6 +62,7 @@ const initialState = {
 	isGoogleApiOn: false,
 	activeSectionMobileView: 'Scheduler',
 	createResponseArray: [],
+	bookingQuote: null,
 };
 
 const bookingFormSlice = createSlice({
@@ -156,6 +155,9 @@ const bookingFormSlice = createSlice({
 		},
 		setCreateResponseArray(state, action) {
 			state.createResponseArray = action.payload;
+		},
+		setBookingQuote(state, action) {
+			state.bookingQuote = action.payload;
 		},
 	},
 });
@@ -278,6 +280,7 @@ export const {
 	setIsBookingOpenInEditMode,
 	createBookingFromScheduler,
 	setCreateResponseArray,
+	setBookingQuote,
 } = bookingFormSlice.actions;
 
 export default bookingFormSlice.reducer;

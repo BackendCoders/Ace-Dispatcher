@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
 	addDataFromSchedulerInEditMode,
 	setActiveSectionMobileView,
+	setBookingQuote,
 } from '../context/bookingSlice';
 import HomeIcon from '@mui/icons-material/Home';
 import LockIcon from '@mui/icons-material/Lock';
@@ -25,6 +26,7 @@ import {
 import { useAuth } from '../hooks/useAuth';
 import {
 	driverArrived,
+	makeBookingQuoteRequest,
 	sendConfirmationText,
 	sendPaymentLink,
 	sendPayReceipt,
@@ -214,6 +216,24 @@ function CustomDialog({ closeDialog }) {
 			dispatch(openSnackbar('Error in Sending Pay Receipt', 'error'));
 		}
 	};
+
+	async function findQuote() {
+		const quote = await makeBookingQuoteRequest({
+			pickupPostcode: data?.pickupPostCode,
+			viaPostcodes: data?.vias.map((via) => via.postCode),
+			destinationPostcode: data?.destinationPostCode,
+			pickupDateTime: data?.pickupDateTime,
+			passengers: data?.passengers,
+			priceFromBase: data?.chargeFromBase,
+		});
+		if (quote.status === 'success') {
+			dispatch(setBookingQuote(quote));
+
+			// updateData('quoteOptions', quote);
+		} else {
+			dispatch(openSnackbar('Failed to get quote', 'error'));
+		}
+	}
 
 	return (
 		<div className='fixed sm:left-[-35vw] left-[-45vw] inset-0 w-[90vw] sm:w-[70vw] mx-auto z-50 flex items-center justify-center p-1 sm:p-4 bg-background bg-opacity-50'>
@@ -732,7 +752,9 @@ function CustomDialog({ closeDialog }) {
 										recurrenceRule: '',
 									};
 									dispatch(addDataFromSchedulerInEditMode(filterData));
+									findQuote();
 									dispatch(setActiveSectionMobileView('Booking'));
+
 									closeDialog(false);
 								}
 							}}
