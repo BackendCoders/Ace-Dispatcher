@@ -4,12 +4,10 @@ import { Button } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import {
 	addDataFromSchedulerInEditMode,
+	findQuote,
 	setActiveSectionMobileView,
-	setBookingQuote,
 	setIsBookingOpenInEditMode,
 } from '../../context/bookingSlice';
-import { openSnackbar } from '../../context/snackbarSlice';
-import { makeBookingQuoteRequest } from '../../utils/apiReq';
 
 function EditBookingModal({ setEditBookingModal, closeDialog }) {
 	const dispatch = useDispatch();
@@ -23,22 +21,6 @@ function EditBookingModal({ setEditBookingModal, closeDialog }) {
 	data = bookings[index];
 	if (activeSearch) data = activeSearchResult;
 
-	async function findQuote() {
-		const quote = await makeBookingQuoteRequest({
-			pickupPostcode: data?.pickupPostCode,
-			viaPostcodes: data?.vias.map((via) => via.postCode),
-			destinationPostcode: data?.destinationPostCode,
-			pickupDateTime: data?.pickupDateTime,
-			passengers: data?.passengers,
-			priceFromBase: data?.chargeFromBase,
-		});
-		if (quote.status === 'success') {
-			dispatch(setBookingQuote(quote));
-			// updateData('quoteOptions', quote);
-		} else {
-			dispatch(openSnackbar('Failed to get quote', 'error'));
-		}
-	}
 	function handleEditOne() {
 		const filterData = {
 			...data,
@@ -49,7 +31,16 @@ function EditBookingModal({ setEditBookingModal, closeDialog }) {
 		dispatch(addDataFromSchedulerInEditMode(filterData));
 		dispatch(setActiveSectionMobileView('Booking'));
 		dispatch(setIsBookingOpenInEditMode((prev) => !prev));
-		findQuote();
+		dispatch(
+			findQuote({
+				pickupPostcode: data?.pickupPostCode,
+				viaPostcodes: data?.vias.map((via) => via.postCode),
+				destinationPostcode: data?.destinationPostCode,
+				pickupDateTime: data?.pickupDateTime,
+				passengers: data?.passengers,
+				priceFromBase: data?.chargeFromBase,
+			})
+		);
 		closeDialog(false);
 		setEditBookingModal(false);
 	}
@@ -58,7 +49,16 @@ function EditBookingModal({ setEditBookingModal, closeDialog }) {
 		dispatch(addDataFromSchedulerInEditMode({ editBlock: true, ...data }));
 		dispatch(setActiveSectionMobileView('Booking'));
 		dispatch(setIsBookingOpenInEditMode((prev) => !prev));
-		findQuote();
+		dispatch(
+			findQuote({
+				pickupPostcode: data?.pickupPostCode,
+				viaPostcodes: data?.vias.map((via) => via.postCode),
+				destinationPostcode: data?.destinationPostCode,
+				pickupDateTime: data?.pickupDateTime,
+				passengers: data?.passengers,
+				priceFromBase: data?.chargeFromBase,
+			})
+		);
 		closeDialog(false);
 		setEditBookingModal(false);
 	}

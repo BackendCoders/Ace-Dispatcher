@@ -1,10 +1,16 @@
 /** @format */
 
 import { createSlice } from '@reduxjs/toolkit';
-import { makeBooking, sendQuotes, updateBooking } from './../utils/apiReq';
+import {
+	makeBooking,
+	makeBookingQuoteRequest,
+	sendQuotes,
+	updateBooking,
+} from './../utils/apiReq';
 import { formatDate } from './../utils/formatDate';
 import { handleSearchBooking } from './schedulerSlice';
 import { getRefreshedBookingsLog } from './BookingLogSlice';
+import { openSnackbar } from './snackbarSlice';
 // Filter data to avoid undefined values and make the data structure consistent
 const filterData = (data = {}) => ({
 	details: data.Details || '',
@@ -267,6 +273,26 @@ export const onSendQuoteBooking =
 			return { status: 'error', message: response.message };
 		}
 	};
+
+export function findQuote(data) {
+	return async (dispatch) => {
+		const quote = await makeBookingQuoteRequest({
+			pickupPostcode: data?.pickupPostcode,
+			viaPostcodes: data?.viaPostcodes,
+			destinationPostcode: data?.destinationPostcode,
+			pickupDateTime: data?.pickupDateTime,
+			passengers: data?.passengers,
+			priceFromBase: data?.priceFromBase,
+		});
+		if (quote.status === 'success') {
+			dispatch(setBookingQuote(quote));
+
+			// updateData('quoteOptions', quote);
+		} else {
+			dispatch(openSnackbar('Failed to get quote', 'error'));
+		}
+	};
+}
 
 export const {
 	addData,
