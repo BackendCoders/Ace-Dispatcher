@@ -9,6 +9,7 @@ import {
 import { registerLicense } from '@syncfusion/ej2-base';
 import Modal from '../components/Modal';
 import CustomDialog from '../components/CustomDialog';
+import NoCrashOutlinedIcon from '@mui/icons-material/NoCrashOutlined';
 
 registerLicense(import.meta.env.VITE_SYNCFUSION_KEY);
 
@@ -42,6 +43,7 @@ import { createBookingFromScheduler } from '../context/bookingSlice';
 import Loader from '../components/Loader';
 import { getAllDrivers } from '../utils/apiReq';
 import { useAuth } from '../hooks/useAuth';
+import ConfirmSoftAllocateModal from '../components/CustomDialogButtons/ConfimSoftAllocateModal';
 
 const AceScheduler = () => {
 	const isMobile = useMediaQuery('(max-width: 640px)');
@@ -66,6 +68,7 @@ const AceScheduler = () => {
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const [selectedBookingData, setSelectedBookingData] = useState();
 	const [viewBookingModal, setViewBookingModal] = useState(false);
+	const [confirmSoftModal, setConfirmSoftModal] = useState(false);
 	const [driverData, setDriverData] = useState([]);
 	const dispatch = useDispatch();
 	const user = useAuth();
@@ -380,6 +383,21 @@ const AceScheduler = () => {
 				<Inject services={[Day, Agenda]} />
 			</ScheduleComponent>
 
+			<div className='flex justify-end w-[10%] fixed top-[110px] right-[180px] sm:top-[125px] sm:right-[550px] z-[40]'>
+				{(!isMobile || user?.currentUser?.roleId !== 3) && !activeSearch && (
+					<button
+						className='select-none whitespace-nowrap text-xs sm:text-sm uppercase font-normal rounded-lg bg-blue-700 text-white hover:bg-opacity-80 px-3 py-2'
+						onClick={() => setConfirmSoftModal(true)}
+					>
+						{isMobile ? (
+							<NoCrashOutlinedIcon fontSize='small' />
+						) : (
+							'Confirm Soft Allocate'
+						)}
+					</button>
+				)}
+			</div>
+
 			<div className='flex justify-end w-[10%] fixed top-[100px] right-[0px] sm:top-[125px] sm:right-[350px] z-[40]'>
 				{(!isMobile || user?.currentUser?.roleId !== 3) && !activeSearch && (
 					<span className='flex flex-row gap-2 items-center align-middle'>
@@ -413,6 +431,15 @@ const AceScheduler = () => {
 					</span>
 				)}
 			</div>
+
+			{confirmSoftModal && (
+				<Modal
+					open={confirmSoftModal}
+					setOpen={setConfirmSoftModal}
+				>
+					<ConfirmSoftAllocateModal setConfirmSoftModal={setConfirmSoftModal} />
+				</Modal>
+			)}
 		</ProtectedRoute>
 	);
 };
