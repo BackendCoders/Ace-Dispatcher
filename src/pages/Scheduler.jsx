@@ -392,7 +392,7 @@ const AceScheduler = () => {
 						{isMobile ? (
 							<NoCrashOutlinedIcon fontSize='small' />
 						) : (
-							'Confirm Soft Allocate'
+							'Confirm SA'
 						)}
 					</button>
 				)}

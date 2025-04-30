@@ -2,7 +2,7 @@
 
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { Box, Switch, TextField, useMediaQuery } from '@mui/material';
+import { Box, TextField, useMediaQuery } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Modal from '../components/Modal';
 import CallIcon from '@mui/icons-material/Call';
@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 // import { setActiveTestMode, setIsGoogleApiOn } from '../context/bookingSlice';
 import {
 	setActiveSectionMobileView,
-	setIsGoogleApiOn,
+	// setIsGoogleApiOn,
 } from '../context/bookingSlice';
 
 import {
@@ -44,7 +44,7 @@ const Navbar = () => {
 	// const activeTestMode = useSelector(
 	// 	(state) => state.bookingForm.isActiveTestMode
 	// );
-	const isGoogleApiOn = useSelector((state) => state.bookingForm.isGoogleApiOn);
+	// const isGoogleApiOn = useSelector((state) => state.bookingForm.isGoogleApiOn);
 	const callerId = useSelector((state) => state.caller);
 	const { activeSearch } = useSelector((state) => state.scheduler);
 	const [openSearch, setOpenSearch] = useState(false);
@@ -73,8 +73,8 @@ const Navbar = () => {
 	};
 
 	const handleTextMessage = () => {
-		setTextMessageModal(true)
-	}
+		setTextMessageModal(true);
+	};
 
 	// console.log('date control---', dateControl);
 
@@ -227,7 +227,7 @@ const Navbar = () => {
 								</div>
 							)}
 
-							{currentUser?.roleId !== 3 && (
+							{/* {currentUser?.roleId !== 3 && (
 								<span className='flex gap-2 items-center'>
 									<span className='text-xs sm:text-sm'>Use Google Api</span>
 									<Switch
@@ -238,7 +238,7 @@ const Navbar = () => {
 										size='small'
 									/>
 								</span>
-							)}
+							)} */}
 
 							{/* Test Mode Toogle Button */}
 							{/* <span className='flex flex-row gap-2 items-center align-middle'>
@@ -367,7 +367,7 @@ const Navbar = () => {
 					)}
 
 					{/* Google API Toggle */}
-					{currentUser?.roleId !== 3 && (
+					{/* {currentUser?.roleId !== 3 && (
 						<div className='flex justify-start items-center gap-2 mb-4'>
 							<span>Use Google Api</span>
 							<Switch
@@ -378,7 +378,7 @@ const Navbar = () => {
 								}}
 							/>
 						</div>
-					)}
+					)} */}
 
 					{/* Logout Button */}
 					{isAuth && (
@@ -420,7 +420,7 @@ function TextMessage({ setTextMessageModal }) {
 		formState: { isSubmitSuccessful, errors }, // Access form errors
 	} = useForm({
 		defaultValues: {
-			message: "",
+			message: '',
 			telephone: '',
 		},
 	});
@@ -429,12 +429,10 @@ function TextMessage({ setTextMessageModal }) {
 		console.log('form Data', data);
 
 		// Dispatch search action only if some data is entered
-		if (
-			data?.message || data.telephone
-		) {
+		if (data?.message || data.telephone) {
 			const response = await textMessageDirectly(data);
-			if(response.status === "success") {
-				dispatch(openSnackbar("Message Send Successfully", "success"))
+			if (response.status === 'success') {
+				dispatch(openSnackbar('Message Send Successfully', 'success'));
 				if (isMobile || isTablet) {
 					setActiveSectionMobileView('Scheduler');
 				}
@@ -449,8 +447,8 @@ function TextMessage({ setTextMessageModal }) {
 	useEffect(() => {
 		if (isSubmitSuccessful) {
 			reset({
-				message: "",
-				telephone: ""
+				message: '',
+				telephone: '',
 			});
 		}
 	}, [reset, isSubmitSuccessful]);
@@ -472,14 +470,11 @@ function TextMessage({ setTextMessageModal }) {
 						label='Phone Number'
 						fullWidth
 						error={!!errors.telephone} // Show error if validation fails
-						helperText={
-							errors.telephone ? 'Phone Number is Required' : ''
-						}
+						helperText={errors.telephone ? 'Phone Number is Required' : ''}
 						{...register('telephone', {
-							required: "Phone Number field is required"
+							required: 'Phone Number field is required',
 						})}
 					/>
-					
 				</Box>
 				<Box
 					mt={2}
