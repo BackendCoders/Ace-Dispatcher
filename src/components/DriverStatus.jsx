@@ -176,9 +176,8 @@ function DriverStatus({ availabilityDate }) {
 									</div>
 									{isMobile && (
 										<div
-											className={`text-sm text-white px-3 py-1 rounded ${
-												statusColors[el?.status] || 'bg-gray-400'
-											}`}
+											className={`text-sm text-white px-3 py-1 rounded `}
+											style={{ backgroundColor: statusColors[el?.status] }}
 										>
 											{status[el?.status]}
 										</div>
