@@ -130,6 +130,12 @@ function DriverStatus({ availabilityDate }) {
 										? 'black'
 										: 'white',
 								}}
+								onClick={() => {
+									if (!isMobile) {
+										setMsgModalOpen(true);
+										setSelectedDriver(el);
+									}
+								}}
 							>
 								<div className='w-full mx-auto flex sm:flex-col sm:justify-start sm:items-start gap-2 justify-center items-center'>
 									<p
