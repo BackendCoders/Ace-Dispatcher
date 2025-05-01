@@ -424,7 +424,9 @@ export default function Push() {
 										onBookingUpload={handleBookingUpload}
 									/>
 									<SimpleSnackbar />
-									<DriverStatus />
+									{import.meta.env.VITE_BASE_URL.includes(
+										'https://dev.ace-api.1soft.co.uk'
+									) && <DriverStatus />}
 								</Box>
 							</Box>
 							{showDriverAvailability && (
@@ -470,7 +472,8 @@ export default function Push() {
 											<CustomDriverAvailabilityChart />
 										</Box>
 									) : (
-										{/* <Box
+										{
+											/* <Box
 											sx={{
 												display: 'flex',
 												justifyContent: 'space-evenly',
@@ -479,7 +482,8 @@ export default function Push() {
 											}}
 										>
 											<DriverStatus />
-										</Box> */}
+										</Box> */
+										}
 									)}
 								</Box>
 							)}
