@@ -414,7 +414,7 @@ export default function Push() {
 										display: 'flex',
 										justifyContent: 'space-evenly',
 										margin: 'auto',
-										alignContent: 'center',
+										alignContent: 'start',
 									}}
 								>
 									<Booking
@@ -424,6 +424,7 @@ export default function Push() {
 										onBookingUpload={handleBookingUpload}
 									/>
 									<SimpleSnackbar />
+									<DriverStatus />
 								</Box>
 							</Box>
 							{showDriverAvailability && (
@@ -455,7 +456,7 @@ export default function Push() {
 										aria-label='scrollable force tabs example'
 									>
 										<Tab label='Availability' />
-										<Tab label='Status' />
+										{/* <Tab label='Status' /> */}
 									</Tabs>
 									{thirdTab === 0 ? (
 										<Box
@@ -469,7 +470,7 @@ export default function Push() {
 											<CustomDriverAvailabilityChart />
 										</Box>
 									) : (
-										<Box
+										{/* <Box
 											sx={{
 												display: 'flex',
 												justifyContent: 'space-evenly',
@@ -478,7 +479,7 @@ export default function Push() {
 											}}
 										>
 											<DriverStatus />
-										</Box>
+										</Box> */}
 									)}
 								</Box>
 							)}

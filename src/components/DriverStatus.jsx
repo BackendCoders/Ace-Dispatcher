@@ -90,9 +90,10 @@ function DriverStatus({ availabilityDate }) {
 	};
 
 	return (
-		<div className='flex flex-col items-center justify-center w-full h-full bg-white rounded-lg px-4 pb-4 sm:p-6 sm:pb-4'>
+		<div className='flex flex-col items-center justify-center w-full sm:w-[15%] h-full bg-white rounded-lg px-4 pb-4 sm:p-0 sm:pb-0'>
 			<div className='flex w-full flex-col justify-center items-center pb-2'>
-				<p className='font-medium'>
+				{!isMobile && <h1 className='font-semibold'>Status</h1>}
+				<p className={`font-medium ${!isMobile ? 'text-sm mt-2' : ''}`}>
 					{date?.split('T')[0].split('-').reverse().join('/')}{' '}
 					{date?.split('T')[1]}
 				</p>
@@ -116,26 +117,27 @@ function DriverStatus({ availabilityDate }) {
 							)}
 							<div
 								key={el?.userId}
-								className='flex justify-center w-full items-center mx-auto cursor-pointer gap-4 mb-2 rounded-md p-1'
+								className='flex sm:flex-col sm:justify-start sm:items-start justify-center w-full items-center mx-auto cursor-pointer gap-4 mb-2 rounded-md p-1'
 								style={{
 									backgroundColor: el?.colourCode,
 									color: isLightColor(el?.colourCode) ? 'black' : 'white',
 								}}
 							>
-								<div className='w-full mx-auto flex gap-2 justify-center items-center'>
+								<div className='w-full mx-auto flex sm:flex-col sm:justify-start sm:items-start gap-2 justify-center items-center'>
 									<p
-										className={`text-sm w-6 h-6 text-center`}
+										className={`text-sm text-center`}
 										style={{
 											backgroundColor: el?.colourCode,
 											color: isLightColor(el?.colourCode) ? 'black' : 'white',
 										}}
 									>
-										{el?.userId}
+										{el?.userId} {!isMobile && <span className='sm:text-sm'>{el?.fullname}</span>}
 									</p>
-									<div className='flex flex-col w-[60%] justify-center items-start text-center'>
-										<p>{el?.fullname}</p>
+									
+									<div className='flex flex-col w-[60%] sm:justify-start justify-center items-start'>
+										{isMobile && <p className=''>{el?.fullname}</p>}
 										<div className='flex gap-1 items-center'>
-											<p>
+											<p className='sm:text-sm whitespace-nowrap'>
 												Started @ {el?.startAt?.split('T')[1].slice(0, 5)}
 											</p>
 											<button
