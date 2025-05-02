@@ -50,6 +50,8 @@ export default function AllocateModal({ setAllocateModal, closeDialog }) {
 		dispatch(selectDriver(driver?.id));
 	}
 
+	console.log({ driverData, data });
+
 	return (
 		<div className='flex flex-col items-center justify-center w-[80vw] sm:w-[23vw] bg-white rounded-lg px-4 pb-4 pt-5 sm:p-6 sm:pb-4'>
 			<div className='p-4 flex justify-center items-center text-center rounded-full bg-[#FEE2E2]'>
@@ -61,7 +63,9 @@ export default function AllocateModal({ setAllocateModal, closeDialog }) {
 				</div>
 				<div className='bg-[#16A34A] text-center font-medium text-white py-2 px-4 w-full rounded-sm'>
 					<p>
-						{data.subject ? data.subject : 'Gillingham station -- Guys Marsh'}
+						{data
+							? data.pickupAddress + ' - ' + data.destinationAddress
+							: 'Gillingham station -- Guys Marsh'}
 					</p>
 				</div>
 
