@@ -17,6 +17,7 @@
 		"@mui/material": "^5.15.20",
 		"@mui/styled-engine-sc": "^6.0.0-alpha.18",
 		"@mui/x-charts": "^7.12.1",
+		"@openreplay/tracker": "^16.2.1",
 		"@react-google-maps/api": "^2.19.3",
 		"@reduxjs/toolkit": "^2.2.7",
 		"@sentry/react": "^8.26.0",
