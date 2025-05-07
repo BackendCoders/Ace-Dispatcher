@@ -428,7 +428,7 @@ const AceScheduler = () => {
 							// 4. EXECUTE MERGE
 							if (targetBooking && targetBooking !== draggedBooking) {
 								const response = await dispatch(
-									mergeTwoBookings(draggedBooking, targetBooking)
+									mergeTwoBookings(targetBooking, draggedBooking)
 								);
 								if (response.status === 'fail') {
 									dispatch(openSnackbar(response.data, 'error'));
