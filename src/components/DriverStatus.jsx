@@ -38,7 +38,6 @@ function DriverStatus({ availabilityDate }) {
 			// );
 
 			const response = await driverShift();
-			console.log(response);
 			const result = Object.values(response);
 			result.pop();
 			if (response.status === 'success') {
