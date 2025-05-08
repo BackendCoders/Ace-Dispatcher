@@ -456,7 +456,7 @@ function CustomDialog({ closeDialog }) {
 																	onClick={() => handleCOAEntry(via.address)}
 																	className={`px-1 py-1 text-white bg-red-700 hover:bg-opacity-80 rounded-lg text-sm`}
 																>
-																	{`COA ${idx + 1}:`}
+																	{`COA: ${idx + 1}`}
 																</button>
 															)}
 														<p className='text-md font-medium pr-2 whitespace-nowrap w-auto ml-2 flex justify-end items-end'>
