@@ -38,6 +38,7 @@ import AvailbilityChartMobileView from '../components/AvailbilityChartMobileView
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import DriverStatus from '../components/DriverStatus';
 import Logs from '../components/Logs';
+import CoaEntryList from '../components/CoaEntryList';
 
 const pusher = new Pusher('8d1879146140a01d73cf', {
 	cluster: 'eu',
@@ -520,6 +521,7 @@ export default function Push() {
 							<Tab label='Map' />
 							<Tab label='Scheduler' />
 							<Tab label='Logs' />
+							<Tab label='COA Entries' />
 							{/* <Tab label='Messages' /> */}
 						</Tabs>
 						{/*secondaryTab === 0 && (
@@ -536,6 +538,7 @@ export default function Push() {
 						)}
 						{secondaryTab === 1 ? <Scheduler /> : null}
 						{secondaryTab === 2 && <Logs />}
+						{secondaryTab === 3 && <CoaEntryList />}
 						{/* {secondaryTab === 3 && <DriverSection />} */}
 					</Box>
 				</>
