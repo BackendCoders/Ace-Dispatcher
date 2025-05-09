@@ -337,6 +337,8 @@ export default function Push() {
 								</Box>
 							) : activeSectionMobileView === 'BookingLogs' ? (
 								<Logs />
+							) : activeSectionMobileView === 'COAEntry' ? (
+								<CoaEntryList />
 							) : (
 								<Scheduler />
 							)}

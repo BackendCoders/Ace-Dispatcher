@@ -1,15 +1,18 @@
 /** @format */
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getRefreshedCOAEntry, setCoaDate } from '../context/coaEntrysSlice';
 import { isValidDate } from '../utils/isValidDate';
 import { formatDate } from '../utils/formatDate';
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
 export default function CoaEntryList() {
 	const dispatch = useDispatch();
 	const { coaEntries, coaDate } = useSelector((state) => state.coaEntry);
+	const [currentPage, setCurrentPage] = useState(1);
+	const [itemsPerPage] = useState(10); // Adjust as needed
 
 	const date = coaDate && coaDate?.split('T')[0];
 	console.log('logs---', coaEntries, coaDate);
@@ -17,6 +20,49 @@ export default function CoaEntryList() {
 	const sortedCoaEntries = [...coaEntries].sort(
 		(a, b) => new Date(b.coaDateTime) - new Date(a.coaDateTime)
 	);
+
+	// Pagination calculations
+	const totalItems = sortedCoaEntries?.length || 0;
+	const totalPages = Math.ceil(totalItems / itemsPerPage);
+	const startIndex = (currentPage - 1) * itemsPerPage;
+	const endIndex = startIndex + itemsPerPage;
+	const paginatedLogs = sortedCoaEntries?.slice(startIndex, endIndex) || [];
+
+	const handleNextPage = () => {
+		if (currentPage < totalPages) {
+			setCurrentPage((prev) => prev + 1);
+		}
+	};
+
+	const handlePrevPage = () => {
+		if (currentPage > 1) {
+			setCurrentPage((prev) => prev - 1);
+		}
+	};
+
+	const handlePageClick = (page) => {
+		setCurrentPage(page);
+	};
+
+	const getVisiblePageNumbers = () => {
+		const maxVisiblePages = 4;
+		let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+		let endPage = startPage + maxVisiblePages - 1;
+
+		// Adjust if endPage exceeds totalPages
+		if (endPage > totalPages) {
+			endPage = totalPages;
+			startPage = Math.max(1, endPage - maxVisiblePages + 1);
+		}
+
+		const pageNumbers = [];
+		for (let i = startPage; i <= endPage; i++) {
+			pageNumbers.push(i);
+		}
+		return pageNumbers;
+	};
+
+	const visiblePageNumbers = getVisiblePageNumbers();
 
 	useEffect(() => {
 		dispatch(getRefreshedCOAEntry(date));
@@ -49,8 +95,8 @@ export default function CoaEntryList() {
 						</tr>
 					</thead>
 					<tbody>
-						{sortedCoaEntries?.length > 0 ? (
-							sortedCoaEntries.map((coa, index) => (
+						{paginatedLogs?.length > 0 ? (
+							paginatedLogs.map((coa, index) => (
 								<tr
 									key={index}
 									className={`hover:bg-gray-100`}
@@ -85,6 +131,41 @@ export default function CoaEntryList() {
 					</tbody>
 				</table>
 			</div>
+
+			{/* Pagination Controls */}
+			{totalPages > 1 && (
+				<div className='flex justify-end items-center gap-2 mt-4'>
+					<button
+						onClick={handlePrevPage}
+						disabled={currentPage === 1}
+						className='px-3 py-1 bg-gray-200 rounded disabled:opacity-50'
+					>
+						<IoIosArrowBack fontSize={18} />
+					</button>
+					<div className='flex space-x-2'>
+						{visiblePageNumbers.map((page) => (
+							<button
+								key={page}
+								onClick={() => handlePageClick(page)}
+								className={`px-3 py-1 rounded ${
+									currentPage === page
+										? 'bg-blue-500 text-white'
+										: 'bg-gray-200 text-gray-700'
+								}`}
+							>
+								{page}
+							</button>
+						))}
+					</div>
+					<button
+						onClick={handleNextPage}
+						disabled={currentPage === totalPages}
+						className='px-3 py-1 bg-gray-200 rounded disabled:opacity-50'
+					>
+						<IoIosArrowForward fontSize={18} />
+					</button>
+				</div>
+			)}
 		</div>
 	);
 }

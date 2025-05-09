@@ -324,6 +324,16 @@ const Navbar = () => {
 							Logs
 						</button>
 					</div>
+					<div className='flex gap-4 mb-4'>
+						<button
+							onClick={() => {
+								dispatch(setActiveSectionMobileView('COAEntry'));
+								setMenuOpen(false);
+							}}
+						>
+							COA Entries
+						</button>
+					</div>
 
 					{/* Search Button */}
 					{currentUser?.roleId !== 3 && (
