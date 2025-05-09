@@ -334,6 +334,8 @@ export default function Push() {
 									</div>
 									<DriverStatus />
 								</Box>
+							) : activeSectionMobileView === 'BookingLogs' ? (
+								<Logs />
 							) : (
 								<Scheduler />
 							)}

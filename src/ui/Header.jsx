@@ -314,6 +314,16 @@ const Navbar = () => {
 							Diary
 						</button>
 					</div>
+					<div className='flex gap-4 mb-4'>
+						<button
+							onClick={() => {
+								dispatch(setActiveSectionMobileView('BookingLogs'));
+								setMenuOpen(false);
+							}}
+						>
+							Logs
+						</button>
+					</div>
 
 					{/* Search Button */}
 					{currentUser?.roleId !== 3 && (
@@ -322,6 +332,7 @@ const Navbar = () => {
 								<button
 									onClick={() => {
 										setOpenSearch(true);
+										dispatch(setActiveSectionMobileView('Scheduler'));
 										setMenuOpen(false);
 									}}
 								>
