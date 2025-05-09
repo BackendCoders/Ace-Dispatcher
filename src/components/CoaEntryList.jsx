@@ -74,7 +74,7 @@ export default function CoaEntryList() {
 				<input
 					required
 					type='datetime-local'
-					className='bg-input text-foreground p-2 rounded-lg border border-border'
+					className='w-full sm:w-auto bg-input text-foreground p-2 rounded-lg border border-border'
 					value={formatDate(coaDate)}
 					onChange={(e) => {
 						if (!isValidDate(e.target.value)) return;
