@@ -482,7 +482,7 @@ const AceScheduler = () => {
 				)}
 			</div>
 
-			<div className='flex justify-end w-[10%] fixed top-[80px] right-[0px] sm:top-[160px] sm:right-[0px] z-[40]'>
+			<div className='hidden sm:flex sm:justify-end w-[10%] fixed top-[80px] right-[0px] sm:top-[160px] sm:right-[0px] z-[40]'>
 				{(!isMobile || user?.currentUser?.roleId !== 3) && !activeSearch && (
 					<span className='flex flex-row gap-2 items-center align-middle'>
 						<span className='select-none whitespace-nowrap text-xs sm:text-sm uppercase font-normal'>

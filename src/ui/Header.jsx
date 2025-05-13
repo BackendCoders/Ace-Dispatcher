@@ -2,7 +2,7 @@
 
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { Box, TextField, useMediaQuery } from '@mui/material';
+import { Box, TextField, useMediaQuery, Switch } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Modal from '../components/Modal';
 import CallIcon from '@mui/icons-material/Call';
@@ -18,6 +18,7 @@ import {
 	// changeActiveDate,
 	handleSearchBooking,
 	makeSearchInactive,
+	setMergeMode,
 	setSearchKeywords,
 	// setDateControl,
 	// makeSearchInactive,
@@ -46,7 +47,7 @@ const Navbar = () => {
 	// );
 	// const isGoogleApiOn = useSelector((state) => state.bookingForm.isGoogleApiOn);
 	const callerId = useSelector((state) => state.caller);
-	const { activeSearch } = useSelector((state) => state.scheduler);
+	const { activeSearch, mergeMode } = useSelector((state) => state.scheduler);
 	const [openSearch, setOpenSearch] = useState(false);
 	const [menuOpen, setMenuOpen] = useState(false);
 	const [recordTurnModal, setRecordTurnModal] = useState(false);
@@ -314,6 +315,18 @@ const Navbar = () => {
 							Diary
 						</button>
 					</div>
+					{currentUser?.roleId !== 3 && (
+						<div className='flex justify-start items-center gap-2 mb-4'>
+							<span>Merge Mode</span>
+							<Switch
+								checked={mergeMode}
+								onChange={() => {
+									dispatch(setMergeMode(!mergeMode));
+									setMenuOpen(false);
+								}}
+							/>
+						</div>
+					)}
 					<div className='flex gap-4 mb-4'>
 						<button
 							onClick={() => {
