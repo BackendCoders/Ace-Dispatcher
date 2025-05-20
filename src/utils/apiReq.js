@@ -720,6 +720,26 @@ async function getCOAEntrys(date) {
 	return await handleGetReq(URL);
 }
 
+async function getNotifications() {
+	const URL = `${BASE}/api/AdminUI/GetNotifications`;
+	return await handleGetReq(URL);
+}
+
+async function clearNotification(id) {
+	const URL = `${BASE}/api/AdminUI/ClearNotification?id=${id}`;
+	return await handleGetReq(URL);
+}
+
+async function clearALLNotification(type) {
+	const URL = `${BASE}/api/AdminUI/ClearAllNotifications?type=${type}`;
+	return await handlePostReq(URL, {});
+}
+
+async function clearALLNotificationWithoutType() {
+	const URL = `${BASE}/api/AdminUI/ClearAllNotifications`;
+	return await handleGetReq(URL);
+}
+
 export {
 	getBookingData,
 	makeBooking,
@@ -761,4 +781,8 @@ export {
 	mergeBookings,
 	createCOAEntry,
 	getCOAEntrys,
+	getNotifications,
+	clearALLNotification,
+	clearNotification,
+	clearALLNotificationWithoutType,
 };

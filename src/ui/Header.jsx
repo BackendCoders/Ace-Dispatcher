@@ -32,6 +32,9 @@ import { recordTurnDown, textMessageDirectly } from '../utils/apiReq';
 import { openSnackbar } from '../context/snackbarSlice';
 import PermPhoneMsgIcon from '@mui/icons-material/PermPhoneMsg';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
+import { clearUnreadCount } from '../context/notificationSlice';
+import { DropdownNotifications } from '../components/Notifications/DropdownNotifications';
 // import { formatDate } from '../utils/formatDate';
 const Navbar = () => {
 	const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -46,10 +49,12 @@ const Navbar = () => {
 	// 	(state) => state.bookingForm.isActiveTestMode
 	// );
 	// const isGoogleApiOn = useSelector((state) => state.bookingForm.isGoogleApiOn);
+	const { unreadCount } = useSelector((state) => state.notification);
 	const callerId = useSelector((state) => state.caller);
 	const { activeSearch, mergeMode } = useSelector((state) => state.scheduler);
 	const [openSearch, setOpenSearch] = useState(false);
 	const [menuOpen, setMenuOpen] = useState(false);
+	const [notificationOpen, setNotificationOpen] = useState(false);
 	const [recordTurnModal, setRecordTurnModal] = useState(false);
 	const [textMessageModal, setTextMessageModal] = useState(false);
 	// const [searchData, setSearchData] = useState({});
@@ -137,14 +142,33 @@ const Navbar = () => {
 								: 'TEST MODE'}
 						</span>
 					</Link>
+
 					{/* Mobile Menu Toggle */}
 					{isAuth && (
-						<button
-							className='md:hidden block text-2xl focus:outline-none mr-2'
-							onClick={() => setMenuOpen(!menuOpen)}
+						<div
+							className='md:hidden flex  text-2xl focus:outline-none mr-2 gap-2 justify-center items-center'
+							onClick={() => {
+								dispatch(clearUnreadCount());
+								setNotificationOpen(!notificationOpen);
+							}}
 						>
-							☰
-						</button>
+							<div
+								className={`relative ${unreadCount > 0 ? 'animate-pulse' : ''}`}
+							>
+								<NotificationsNoneOutlinedIcon className='text-white' />
+								{unreadCount > 0 && (
+									<span className='absolute -top-1 right-0 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full'>
+										{unreadCount}
+									</span>
+								)}
+							</div>
+							<button
+								className='md:hidden block text-2xl focus:outline-none mr-2'
+								onClick={() => setMenuOpen(!menuOpen)}
+							>
+								☰
+							</button>
+						</div>
 					)}
 				</span>
 
@@ -228,6 +252,30 @@ const Navbar = () => {
 								</div>
 							)}
 
+							{/* Notification  */}
+							<div
+								className='flex text-2xl focus:outline-none mr-2 gap-2 justify-center items-center'
+								onClick={() => {
+									setNotificationOpen(!notificationOpen);
+									dispatch(clearUnreadCount());
+								}}
+							>
+								<div
+									className={`relative ${
+										unreadCount > 0 ? 'animate-pulse' : ''
+									}`}
+								>
+									<NotificationsNoneOutlinedIcon
+										className='text-white'
+										fontSize='small'
+									/>
+									{unreadCount > 0 && (
+										<span className='absolute -top-1 right-0 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full'>
+											{unreadCount}
+										</span>
+									)}
+								</div>
+							</div>
 							{/* {currentUser?.roleId !== 3 && (
 								<span className='flex gap-2 items-center'>
 									<span className='text-xs sm:text-sm'>Use Google Api</span>
@@ -428,12 +476,25 @@ const Navbar = () => {
 						</button>
 					)}
 				</div>
+				{notificationOpen && !menuOpen && (
+					<div
+						className={`fixed top-16 md:right-28 right-4 z-50 w-[80%] rounded-md md:w-[80%] max-w-xs md:max-w-md bg-white text-white transform  transition-transform duration-300 ease-in-out`}
+					>
+						<DropdownNotifications setNotificationOpen={setNotificationOpen} />
+					</div>
+				)}
 
 				{/* Overlay for closing the panel */}
 				{menuOpen && (
 					<div
 						className='fixed inset-0 z-30 bg-black opacity-50'
 						onClick={() => setMenuOpen(false)}
+					></div>
+				)}
+				{notificationOpen && (
+					<div
+						className='fixed inset-0 z-30 bg-black opacity-50'
+						onClick={() => setNotificationOpen(false)}
 					></div>
 				)}
 			</nav>

@@ -7,6 +7,7 @@ import snackbarReducer from './context/snackbarSlice';
 import schedulerReducer from './context/schedulerSlice';
 import bookingLogsReducer from './context/BookingLogSlice';
 import coaEntryReducer from './context/coaEntrysSlice';
+import notificationReducer from './context/notificationSlice';
 
 const store = configureStore({
 	reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
 		scheduler: schedulerReducer,
 		logs: bookingLogsReducer,
 		coaEntry: coaEntryReducer,
+		notification: notificationReducer,
 	},
 });
 
