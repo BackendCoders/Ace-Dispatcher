@@ -3,7 +3,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { Box, TextField, useMediaQuery, Switch } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Modal from '../components/Modal';
 import CallIcon from '@mui/icons-material/Call';
 import Badge from '@mui/material/Badge';
@@ -33,7 +33,10 @@ import { openSnackbar } from '../context/snackbarSlice';
 import PermPhoneMsgIcon from '@mui/icons-material/PermPhoneMsg';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
-import { clearUnreadCount } from '../context/notificationSlice';
+import {
+	clearUnreadCount,
+	refreshNotifications,
+} from '../context/notificationSlice';
 import { DropdownNotifications } from '../components/Notifications/DropdownNotifications';
 // import { formatDate } from '../utils/formatDate';
 const Navbar = () => {
@@ -81,6 +84,71 @@ const Navbar = () => {
 	const handleTextMessage = () => {
 		setTextMessageModal(true);
 	};
+
+	const { systemNotifications, driverNotifications, muteNotification } =
+		useSelector((state) => state.notification);
+
+	const lastSystemId = useRef(null);
+	const lastDriverId = useRef(null);
+
+	const systemAudio = useRef(new Audio('/media/audio/system_audio.mp3'));
+	const driverAudio = useRef(new Audio('/media/audio/driver_audio.mp3'));
+	// const { isRTL } = useLanguage();
+
+	// play sound helper
+	const playSound = (type) => {
+		if (type === 'system') {
+			systemAudio.current
+				.play()
+				.catch((e) => console.log('System audio failed', e));
+		} else if (type === 'driver') {
+			driverAudio.current
+				.play()
+				.catch((e) => console.log('Driver audio failed', e));
+		}
+	};
+
+	const checkNewNotifications = () => {
+		if (systemNotifications?.length > 0) {
+			const newestSystem = [...systemNotifications]
+				.filter((n) => n.status === 0)
+				.sort(
+					(a, b) => new Date(b.dateTimeStamp) - new Date(a.dateTimeStamp)
+				)[0];
+			if (newestSystem && newestSystem.id !== lastSystemId.current) {
+				lastSystemId.current = newestSystem.id;
+				if (muteNotification) playSound('system');
+			}
+		}
+
+		if (driverNotifications?.length > 0) {
+			const newestDriver = [...driverNotifications]
+				.filter((n) => n.status === 0)
+				.sort(
+					(a, b) => new Date(b.dateTimeStamp) - new Date(a.dateTimeStamp)
+				)[0];
+			if (newestDriver && newestDriver.id !== lastDriverId.current) {
+				lastDriverId.current = newestDriver.id;
+				if (muteNotification) playSound('driver');
+			}
+		}
+	};
+
+	useEffect(() => {
+		dispatch(refreshNotifications());
+	}, [dispatch]);
+
+	useEffect(() => {
+		const intervalId = setInterval(() => {
+			dispatch(refreshNotifications());
+		}, 15000);
+
+		return () => clearInterval(intervalId); // Cleanup function to clear timeout on unmount
+	}, [dispatch]);
+
+	useEffect(() => {
+		checkNewNotifications();
+	}, [systemNotifications, driverNotifications]);
 
 	// console.log('date control---', dateControl);
 

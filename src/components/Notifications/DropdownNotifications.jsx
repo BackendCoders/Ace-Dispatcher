@@ -2,12 +2,9 @@
 
 // import { useLanguage } from '@/i18n';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-	refreshNotifications,
-	setMuteNotification,
-} from '../../context/notificationSlice';
+import { setMuteNotification } from '../../context/notificationSlice';
 import { DropdownNotificationsSystem } from './DropdownNoitificationsSystem';
 import { DropdownNotificationsDriver } from './DropdownNoitificationsDriver';
 import { DropdownNotificationsAll } from './DropdownNotificationsAll';
@@ -17,71 +14,7 @@ import VolumeMuteOutlinedIcon from '@mui/icons-material/VolumeMuteOutlined';
 const DropdownNotifications = ({ setNotificationOpen }) => {
 	const dispatch = useDispatch();
 	const [secondaryTab, setSecondaryTab] = useState(0);
-
-	const { systemNotifications, driverNotifications, muteNotification } =
-		useSelector((state) => state.notification);
-
-	const lastSystemId = useRef(null);
-	const lastDriverId = useRef(null);
-
-	const systemAudio = useRef(new Audio('/media/audio/system_audio.mp3'));
-	const driverAudio = useRef(new Audio('/media/audio/driver_audio.mp3'));
-	// const { isRTL } = useLanguage();
-
-	// play sound helper
-	const playSound = (type) => {
-		if (type === 'system') {
-			systemAudio.current
-				.play()
-				.catch((e) => console.log('System audio failed', e));
-		} else if (type === 'driver') {
-			driverAudio.current
-				.play()
-				.catch((e) => console.log('Driver audio failed', e));
-		}
-	};
-
-	const checkNewNotifications = () => {
-		if (systemNotifications?.length > 0) {
-			const newestSystem = [...systemNotifications]
-				.filter((n) => n.status === 0)
-				.sort(
-					(a, b) => new Date(b.dateTimeStamp) - new Date(a.dateTimeStamp)
-				)[0];
-			if (newestSystem && newestSystem.id !== lastSystemId.current) {
-				lastSystemId.current = newestSystem.id;
-				if (muteNotification) playSound('system');
-			}
-		}
-
-		if (driverNotifications?.length > 0) {
-			const newestDriver = [...driverNotifications]
-				.filter((n) => n.status === 0)
-				.sort(
-					(a, b) => new Date(b.dateTimeStamp) - new Date(a.dateTimeStamp)
-				)[0];
-			if (newestDriver && newestDriver.id !== lastDriverId.current) {
-				lastDriverId.current = newestDriver.id;
-				if (muteNotification) playSound('driver');
-			}
-		}
-	};
-
-	useEffect(() => {
-		dispatch(refreshNotifications());
-	}, [dispatch]);
-
-	useEffect(() => {
-		const intervalId = setInterval(() => {
-			dispatch(refreshNotifications());
-		}, 15000);
-
-		return () => clearInterval(intervalId); // Cleanup function to clear timeout on unmount
-	}, [dispatch]);
-
-	useEffect(() => {
-		checkNewNotifications();
-	}, [systemNotifications, driverNotifications]);
+	const { muteNotification } = useSelector((state) => state.notification);
 
 	return (
 		<Box className='border-gray-300 border rounded-md max-w-[460px] overflow-hidden mt-0 mb-0 mx-auto'>
