@@ -41,7 +41,7 @@ const DropdownNotificationsSystem = () => {
 
 	const buildList = () => {
 		return (
-			<div className='flex flex-col gap-5 pt-3 pb-4 divider-y divider-gray-200'>
+			<div className='flex flex-col gap-5 pt-3 pb-4 divider-y divider-gray-200 overflow-auto'>
 				{latestSystemNotification.length > 0 ? (
 					latestSystemNotification.map((notification) => (
 						<DropdownNotificationsItem
