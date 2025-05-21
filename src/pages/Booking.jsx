@@ -199,7 +199,7 @@ function Booking({ bookingData, id, onBookingUpload }) {
 
 	function handleClick(event, ref) {
 		ref.current.focus();
-		ref.current.select();
+		// ref.current.select();
 	}
 
 	async function calculatePickup() {
