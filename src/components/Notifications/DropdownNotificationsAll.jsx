@@ -42,7 +42,7 @@ const DropdownNotificationsAll = () => {
 
 	const buildList = () => {
 		return (
-			<div className='flex flex-col gap-5 pt-3 pb-4 divider-y divider-gray-200 overflow-auto'>
+			<div className='flex flex-col gap-5 pt-3 pb-4 divider-y divider-gray-200'>
 				{latestAllNotification.length > 0 ? (
 					latestAllNotification.map((notification) => (
 						<DropdownNotificationsItem
@@ -78,7 +78,7 @@ const DropdownNotificationsAll = () => {
 	return (
 		<div className='grow'>
 			<div
-				className='scrollable-y-auto'
+				className='overflow-y-auto'
 				style={{
 					maxHeight: `${listHeight}px`,
 				}}
