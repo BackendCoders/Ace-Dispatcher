@@ -201,23 +201,29 @@ const Navbar = () => {
 
           {/* Mobile Menu Toggle */}
           {isAuth && (
-            <div
-              className="md:hidden flex  text-2xl focus:outline-none mr-2 gap-2 justify-center items-center"
-              onClick={() => {
-                dispatch(clearUnreadCount());
-                setNotificationOpen(!notificationOpen);
-              }}
-            >
-              <div
-                className={`relative ${unreadCount > 0 ? "animate-pulse" : ""}`}
-              >
-                <NotificationsNoneOutlinedIcon className="text-white" />
-                {unreadCount > 0 && (
-                  <span className="absolute -top-1 right-0 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
-                    {unreadCount}
-                  </span>
-                )}
-              </div>
+            <div className="md:hidden flex  text-2xl focus:outline-none mr-2 gap-2 justify-center items-center">
+              {currentUser?.roleId !== 3 && (
+                <div
+                  className="md:hidden flex  text-2xl focus:outline-none mr-2 gap-2 justify-center items-center"
+                  onClick={() => {
+                    dispatch(clearUnreadCount());
+                    setNotificationOpen(!notificationOpen);
+                  }}
+                >
+                  <div
+                    className={`relative ${
+                      unreadCount > 0 ? "animate-pulse" : ""
+                    }`}
+                  >
+                    <NotificationsNoneOutlinedIcon className="text-white" />
+                    {unreadCount > 0 && (
+                      <span className="absolute -top-1 right-0 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                        {unreadCount}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              )}
               <button
                 className="md:hidden block text-2xl focus:outline-none mr-2"
                 onClick={() => setMenuOpen(!menuOpen)}
@@ -309,29 +315,31 @@ const Navbar = () => {
               )}
 
               {/* Notification  */}
-              <div
-                className="flex text-2xl focus:outline-none mr-2 gap-2 justify-center items-center"
-                onClick={() => {
-                  setNotificationOpen(!notificationOpen);
-                  dispatch(clearUnreadCount());
-                }}
-              >
+              {currentUser?.roleId !== 3 && (
                 <div
-                  className={`relative ${
-                    unreadCount > 0 ? "animate-pulse" : ""
-                  }`}
+                  className="flex text-2xl focus:outline-none mr-2 gap-2 justify-center items-center"
+                  onClick={() => {
+                    setNotificationOpen(!notificationOpen);
+                    dispatch(clearUnreadCount());
+                  }}
                 >
-                  <NotificationsNoneOutlinedIcon
-                    className="text-white"
-                    fontSize="small"
-                  />
-                  {unreadCount > 0 && (
-                    <span className="absolute -top-1 right-0 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
-                      {unreadCount}
-                    </span>
-                  )}
+                  <div
+                    className={`relative ${
+                      unreadCount > 0 ? "animate-pulse" : ""
+                    }`}
+                  >
+                    <NotificationsNoneOutlinedIcon
+                      className="text-white"
+                      fontSize="small"
+                    />
+                    {unreadCount > 0 && (
+                      <span className="absolute -top-1 right-0 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                        {unreadCount}
+                      </span>
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
               {/* {currentUser?.roleId !== 3 && (
 								<span className='flex gap-2 items-center'>
 									<span className='text-xs sm:text-sm'>Use Google Api</span>
