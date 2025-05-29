@@ -88,8 +88,8 @@ const Navbar = () => {
   const { systemNotifications, driverNotifications, muteNotification } =
     useSelector((state) => state.notification);
 
-  const lastSystemId = useRef(null);
-  const lastDriverId = useRef(null);
+  const lastSystemId = useRef(new Set());
+  const lastDriverId = useRef(new Set());
 
   const systemAudio = useRef(new Audio("/media/audio/system_audio.mp3"));
   const driverAudio = useRef(new Audio("/media/audio/driver_audio.mp3"));
@@ -115,8 +115,8 @@ const Navbar = () => {
         .sort(
           (a, b) => new Date(b.dateTimeStamp) - new Date(a.dateTimeStamp)
         )[0];
-      if (newestSystem && newestSystem.id !== lastSystemId.current) {
-        lastSystemId.current = newestSystem.id;
+      if (newestSystem && !lastSystemId.current.has(newestSystem.id)) {
+        lastSystemId.current.add(newestSystem.id);
         if (!muteNotification) playSound("system");
       }
     }
@@ -127,8 +127,8 @@ const Navbar = () => {
         .sort(
           (a, b) => new Date(b.dateTimeStamp) - new Date(a.dateTimeStamp)
         )[0];
-      if (newestDriver && newestDriver.id !== lastDriverId.current) {
-        lastDriverId.current = newestDriver.id;
+      if (newestDriver && !lastDriverId.current.has(newestDriver.id)) {
+        lastDriverId.current.add(newestDriver.id);
         if (!muteNotification) playSound("driver");
       }
     }
