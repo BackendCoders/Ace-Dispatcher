@@ -114,6 +114,8 @@ const AuthProvider = ({ children }) => {
     localStorage.removeItem("username");
     localStorage.removeItem("accounts");
     localStorage.removeItem("muteNotification");
+    localStorage.removeItem("lastSystemId");
+    localStorage.removeItem("lastDriverId");
     setCurrentUser(null);
     setIsAuth(false);
   };

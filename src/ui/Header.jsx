@@ -88,8 +88,17 @@ const Navbar = () => {
   const { systemNotifications, driverNotifications, muteNotification } =
     useSelector((state) => state.notification);
 
-  const lastSystemId = useRef(new Set());
-  const lastDriverId = useRef(new Set());
+  const lastSystemId = useRef(
+    new Set(JSON.parse(localStorage.getItem("lastSystemId") || "[]"))
+  );
+  const lastDriverId = useRef(
+    new Set(JSON.parse(localStorage.getItem("lastDriverId") || "[]"))
+  );
+
+  const addSeenId = (ref, storageKey, id) => {
+    ref.current.add(id);
+    localStorage.setItem(storageKey, JSON.stringify([...ref.current]));
+  };
 
   const systemAudio = useRef(new Audio("/media/audio/system_audio.mp3"));
   const driverAudio = useRef(new Audio("/media/audio/driver_audio.mp3"));
@@ -118,6 +127,7 @@ const Navbar = () => {
       if (newestSystem && !lastSystemId.current.has(newestSystem.id)) {
         lastSystemId.current.add(newestSystem.id);
         if (!muteNotification) playSound("system");
+        addSeenId(lastSystemId, "lastSystemId", newestSystem.id);
       }
     }
 
@@ -130,6 +140,8 @@ const Navbar = () => {
       if (newestDriver && !lastDriverId.current.has(newestDriver.id)) {
         lastDriverId.current.add(newestDriver.id);
         if (!muteNotification) playSound("driver");
+        addSeenId(lastDriverId, "lastDriverId", newestDriver.id);
+
       }
     }
   };
