@@ -25,7 +25,7 @@ const DropdownNotifications = ({ setNotificationOpen }) => {
 						className='cursor-pointer'
 						onClick={() => dispatch(setMuteNotification(!muteNotification))}
 					>
-						{muteNotification ? (
+						{!muteNotification ? (
 							<VolumeUpOutlinedIcon
 								fontSize='small'
 								className='text-blue-500'
