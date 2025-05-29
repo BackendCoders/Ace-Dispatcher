@@ -140,10 +140,10 @@ const DropdownNotificationsItem = ({ notification, markAsRead }) => {
             (message.includes("created a new web booking request") ||
               message.includes("requested to cancel booking")) && (
               <Link
-                to={`/bookings/${
+                to={`/${
                   message.includes("created a new web booking request")
-                    ? "web-booking"
-                    : "amend-booking"
+                    ? ""
+                    : ""
                 }`}
                 onClick={() => markAsRead(id)}
               >

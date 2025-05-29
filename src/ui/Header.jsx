@@ -141,7 +141,6 @@ const Navbar = () => {
         lastDriverId.current.add(newestDriver.id);
         if (!muteNotification) playSound("driver");
         addSeenId(lastDriverId, "lastDriverId", newestDriver.id);
-
       }
     }
   };
