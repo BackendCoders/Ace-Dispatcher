@@ -472,7 +472,7 @@ const AceScheduler = () => {
 			</ScheduleComponent>
 
 			<div className='flex justify-end w-[10%] fixed top-[110px] right-[180px] sm:top-[125px] sm:right-[550px] z-[40]'>
-				{(!isMobile || user?.currentUser?.roleId !== 3) && !activeSearch && (
+				{(user?.currentUser?.roleId !== 3) && !activeSearch && (
 					<button
 						className='select-none whitespace-nowrap text-xs sm:text-sm uppercase font-normal rounded-lg bg-blue-700 text-white hover:bg-opacity-80 px-3 py-2'
 						onClick={() => setConfirmSoftModal(true)}
@@ -483,7 +483,7 @@ const AceScheduler = () => {
 			</div>
 
 			<div className='hidden sm:flex sm:justify-end w-[10%] fixed top-[80px] right-[0px] sm:top-[160px] sm:right-[0px] z-[40]'>
-				{(!isMobile || user?.currentUser?.roleId !== 3) && !activeSearch && (
+				{(user?.currentUser?.roleId !== 3) && !activeSearch && (
 					<span className='flex flex-row gap-2 items-center align-middle'>
 						<span className='select-none whitespace-nowrap text-xs sm:text-sm uppercase font-normal'>
 							Merge Mode
@@ -500,7 +500,7 @@ const AceScheduler = () => {
 			</div>
 
 			<div className='flex justify-end w-[10%] fixed top-[100px] right-[0px] sm:top-[125px] sm:right-[350px] z-[40]'>
-				{(!isMobile || user?.currentUser?.roleId !== 3) && !activeSearch && (
+				{(user?.currentUser?.roleId !== 3) && !activeSearch && (
 					<span className='flex flex-row gap-2 items-center align-middle'>
 						<span className='select-none whitespace-nowrap text-xs sm:text-sm uppercase font-normal'>
 							Show Allocated
@@ -517,7 +517,7 @@ const AceScheduler = () => {
 			</div>
 			{/* Changed by Tanya - (9 Aug) */}
 			<div className='flex justify-end w-[10%] fixed top-[120px] right-[0px] sm:top-[125px] sm:right-[160px] z-[40]'>
-				{(!isMobile || user?.currentUser?.roleId !== 3) && !activeSearch && (
+				{(user?.currentUser?.roleId !== 3) && !activeSearch && (
 					<span className='flex flex-row gap-2 items-center align-middle'>
 						<span className='select-none whitespace-nowrap text-xs sm:text-sm uppercase font-normal'>
 							Show Completed
