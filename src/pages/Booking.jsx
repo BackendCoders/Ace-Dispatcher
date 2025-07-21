@@ -55,7 +55,6 @@ function Booking({ bookingData, id, onBookingUpload }) {
 	// All Hooks and Contexts for the data flow and management
 	const { currentUser, isAuth } = useAuth();
 
-	// console.log(currentUser);
 	const dispatch = useDispatch();
 	const callerId = useSelector((state) => state.caller);
 	const { isGoogleApiOn, isBookingOpenInEditMode } = useSelector(
@@ -305,7 +304,6 @@ function Booking({ bookingData, id, onBookingUpload }) {
 		async function getAccountListDetails() {
 			try {
 				const response = await getAccountList();
-				// console.log(response);
 				setAccountDetails(response);
 			} catch (error) {
 				console.log(error);
@@ -481,7 +479,6 @@ function Booking({ bookingData, id, onBookingUpload }) {
 		}
 	}, [bookingData.formBusy, bookingData.pickupDateTime, dispatch]);
 
-	// console.log('active Date in Booking Form', activeDate);
 
 	useEffect(() => {
 		if (bookingData.formBusy) return;
@@ -534,7 +531,6 @@ function Booking({ bookingData, id, onBookingUpload }) {
 
 	async function handleSendQuoteModal(selectedOptions) {
 		try {
-			console.log(selectedOptions);
 			await dispatch(onSendQuoteBooking(id, selectedOptions));
 			dispatch(openSnackbar('Quote Sent Successfully', 'success'));
 		} catch (error) {
