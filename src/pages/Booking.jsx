@@ -580,6 +580,7 @@ function Booking({ bookingData, id, onBookingUpload }) {
 	]);
 
 	useEffect(() => {
+		if (bookingData.manuallyPriced) return;
 		if (
 			bookingData.scope === 1
 			// (bookingData.accountNumber === 9014 ||
@@ -587,7 +588,12 @@ function Booking({ bookingData, id, onBookingUpload }) {
 		) {
 			hvsDriverQuote();
 		}
-	}, [bookingData.scope, bookingData.accountNumber, hvsDriverQuote]);
+	}, [
+		bookingData.scope,
+		bookingData.accountNumber,
+		hvsDriverQuote,
+		bookingData.manuallyPriced,
+	]);
 
 	if (!bookingData) return null;
 
