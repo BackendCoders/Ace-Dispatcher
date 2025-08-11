@@ -580,7 +580,6 @@ function Booking({ bookingData, id, onBookingUpload }) {
 	]);
 
 	useEffect(() => {
-		if (bookingData.manuallyPriced) return;
 		if (
 			bookingData.scope === 1
 			// (bookingData.accountNumber === 9014 ||
@@ -588,12 +587,7 @@ function Booking({ bookingData, id, onBookingUpload }) {
 		) {
 			hvsDriverQuote();
 		}
-	}, [
-		bookingData.scope,
-		bookingData.accountNumber,
-		hvsDriverQuote,
-		bookingData.manuallyPriced,
-	]);
+	}, [bookingData.scope, bookingData.accountNumber, hvsDriverQuote]);
 
 	if (!bookingData) return null;
 
@@ -1207,7 +1201,11 @@ function Booking({ bookingData, id, onBookingUpload }) {
 											value={bookingData.accountNumber}
 											onChange={(e) => {
 												updateData('accountNumber', +e.target.value);
-												if (!bookingData.manuallyPriced) hvsDriverQuote();
+												// if (
+												// 	+e.target.value === 9014 ||
+												// 	+e.target.value === 10026
+												// )
+												hvsDriverQuote();
 											}}
 											className='block w-[65%] mt-1 py-2 px-0 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm'
 										>
