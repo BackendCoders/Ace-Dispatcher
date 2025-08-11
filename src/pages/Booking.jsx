@@ -191,11 +191,12 @@ function Booking({ bookingData, id, onBookingUpload }) {
 			viaPostcodes: bookingData.vias.map((via) => via.postCode),
 			destinationPostcode: bookingData.destinationPostCode,
 			pickupDateTime: bookingData.pickupDateTime,
-			passengers: bookingData.passengers,
+			passengers: Number(bookingData.passengers),
 			priceFromBase: bookingData.chargeFromBase,
+			accountNo: bookingData.accountNumber || 9999,
 		});
 		if (quote.status === 'success') {
-			updateData('price', +quote.totalPrice);
+			updateData('price', +quote.priceDriver);
 			updateData('durationText', String(quote.totalMinutes));
 			updateData('quoteOptions', quote);
 			setIsQuoteDialogActive(true);
@@ -328,12 +329,13 @@ function Booking({ bookingData, id, onBookingUpload }) {
 			viaPostcodes: bookingData.vias.map((via) => via.postCode),
 			destinationPostcode: bookingData.destinationPostCode,
 			pickupDateTime: bookingData.pickupDateTime,
-			passengers: bookingData.passengers,
+			passengers: Number(bookingData.passengers),
 			priceFromBase: bookingData.chargeFromBase,
+			accountNo: bookingData.accountNumber || 9999,
 		}).then((quote) => {
-			if (quote.status === 'success') {
+			if (quote?.status === 'success') {
 				if (!bookingData?.manuallyPriced) {
-					dispatch(updateValueSilentMode(id, 'price', +quote.totalPrice));
+					dispatch(updateValueSilentMode(id, 'price', +quote.priceDriver));
 				}
 				dispatch(updateValueSilentMode(id, 'quoteOptions', quote));
 				dispatch(
@@ -358,6 +360,7 @@ function Booking({ bookingData, id, onBookingUpload }) {
 		bookingData.destinationPostCode,
 		bookingData.postcode,
 		bookingData.chargeFromBase,
+		bookingData.accountNumber,
 		bookingData.vias,
 		bookingData.pickupDateTime,
 		bookingData.passengers,
@@ -479,7 +482,6 @@ function Booking({ bookingData, id, onBookingUpload }) {
 		}
 	}, [bookingData.formBusy, bookingData.pickupDateTime, dispatch]);
 
-
 	useEffect(() => {
 		if (bookingData.formBusy) return;
 		dispatch(
@@ -548,14 +550,15 @@ function Booking({ bookingData, id, onBookingUpload }) {
 				viaPostcodes: bookingData.vias.map((via) => via.postCode),
 				destinationPostcode: bookingData.destinationPostCode,
 				pickupDateTime: bookingData.pickupDateTime,
-				passengers: bookingData.passengers,
+				passengers: Number(bookingData.passengers),
 				priceFromBase: bookingData.chargeFromBase,
+				accountNo: bookingData.accountNumber || 9999,
 			};
 
 			const response = await getQuoteHvsDriver(payload);
 
 			if (response.status === 'success') {
-				updateData('price', response?.totalPrice.toFixed(2));
+				updateData('price', response?.priceDriver.toFixed(2)); // totalPrice is replaced with priceDriver
 			}
 		} catch (error) {
 			console.log(error);
@@ -563,6 +566,7 @@ function Booking({ bookingData, id, onBookingUpload }) {
 		}
 	}, [
 		bookingData.chargeFromBase,
+		bookingData.accountNumber,
 		bookingData.destinationPostCode,
 		bookingData.passengers,
 		bookingData.pickupDateTime,

@@ -21,6 +21,8 @@ function EditBookingModal({ setEditBookingModal, closeDialog }) {
 	data = bookings[index];
 	if (activeSearch) data = activeSearchResult;
 
+	console.log("----" , data)
+
 	function handleEditOne() {
 		const filterData = {
 			...data,
@@ -39,6 +41,7 @@ function EditBookingModal({ setEditBookingModal, closeDialog }) {
 				pickupDateTime: data?.pickupDateTime,
 				passengers: data?.passengers,
 				priceFromBase: data?.chargeFromBase,
+				accountNo: data?.accountNumber || 9999,
 			})
 		);
 		closeDialog(false);
@@ -57,6 +60,8 @@ function EditBookingModal({ setEditBookingModal, closeDialog }) {
 				pickupDateTime: data?.pickupDateTime,
 				passengers: data?.passengers,
 				priceFromBase: data?.chargeFromBase,
+				accountNo: data?.accountNumber || 9999,
+				
 			})
 		);
 		closeDialog(false);

@@ -177,7 +177,7 @@ const getBookingData = async function (date) {
 };
 
 async function makeBookingQuoteRequest(data) {
-	const URL = BASE + '/api/Bookings/Quote';
+	const URL = BASE + '/api/Bookings/GetPrice'; // api/Booking/Quote changed
 	const requestData = {
 		pickupPostcode: data.pickupPostcode,
 		viaPostcodes: data.viaPostcodes,
@@ -185,6 +185,7 @@ async function makeBookingQuoteRequest(data) {
 		pickupDateTime: convertDateString(data.pickupDateTime),
 		passengers: data.passengers,
 		priceFromBase: data.priceFromBase || data.chargeFromBase,
+		accountNo: data.accountNumber || 9999,
 	};
 
 	const res = await handlePostReq(URL, requestData);
@@ -741,7 +742,7 @@ async function clearALLNotificationWithoutType() {
 }
 
 async function getQuoteHvsDriver(payload) {
-	const URL = `${BASE}/api/Bookings/QuoteHVSDriver`;
+	const URL = `${BASE}/api/Bookings/GetPrice`; // /api/Bookings/QuoteHVSDriver is replaced
 	return await handlePostReq(URL, payload);
 }
 
