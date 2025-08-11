@@ -573,6 +573,7 @@ function Booking({ bookingData, id, onBookingUpload }) {
 			dispatch(openSnackbar('Unable to fetch Driver Price', 'error'));
 		}
 	}, [
+		bookingData.manuallyPriced,
 		bookingData.chargeFromBase,
 		bookingData.accountNumber,
 		bookingData.destinationPostCode,
