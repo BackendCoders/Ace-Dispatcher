@@ -576,6 +576,7 @@ function Booking({ bookingData, id, onBookingUpload }) {
 		bookingData.passengers,
 		bookingData.pickupDateTime,
 		bookingData.pickupPostCode,
+		bookingData.manuallyPriced,
 		bookingData.vias,
 		dispatch,
 		updateData,
