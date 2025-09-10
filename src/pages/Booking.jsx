@@ -201,6 +201,7 @@ function Booking({ bookingData, id, onBookingUpload }) {
 			updateData('quoteOptions', quote);
 			setIsQuoteDialogActive(true);
 			setQuote(quote);
+			dispatch(setBookingQuote(quote));
 		} else {
 			setQuote(null);
 			dispatch(openSnackbar('Failed to get quote', 'error'));
@@ -349,6 +350,7 @@ function Booking({ bookingData, id, onBookingUpload }) {
 					)
 				);
 				dispatch(updateValueSilentMode(id, 'minutes', quote.totalMinutes % 60));
+				dispatch(setBookingQuote(quote));
 			} else {
 				// setQuote(null);
 				updateData('price', '');
