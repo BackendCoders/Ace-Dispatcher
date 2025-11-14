@@ -170,6 +170,9 @@ function Booking({ bookingData, id, onBookingUpload }) {
   function handleAddPickup(location) {
     updateData("pickupAddress", location.address);
     updateData("pickupPostCode", location.postcode);
+    if (location?.name) {
+      updateData("passengerName", location?.name);
+    }
   }
 
   // This Function sets the destination address and postcode by location data used in autocomplete
