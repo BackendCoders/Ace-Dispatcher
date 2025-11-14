@@ -229,7 +229,7 @@ function GoogleAutoComplete({
               label: cleanedAddress,
               id: poi.id,
               name: poi.name,
-              address: poi.address || "Unknown Address",
+              address: cleanedAddress || "Unknown Address",
               postcode: poi.postcode || "No Postcode",
               longitude: poi.longitude,
               latitude: poi.latitude,
