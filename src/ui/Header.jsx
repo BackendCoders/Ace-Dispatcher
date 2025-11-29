@@ -38,6 +38,7 @@ import {
   refreshNotifications,
 } from "../context/notificationSlice";
 import { DropdownNotifications } from "../components/Notifications/DropdownNotifications";
+import { AirplaneTicketOutlined } from "@mui/icons-material";
 // import { formatDate } from '../utils/formatDate';
 const Navbar = () => {
   const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -60,6 +61,7 @@ const Navbar = () => {
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [recordTurnModal, setRecordTurnModal] = useState(false);
   const [textMessageModal, setTextMessageModal] = useState(false);
+  const [ticketRaiseModal, setTicketRaiseModal] = useState(false);
   // const [searchData, setSearchData] = useState({});
   // const inputRef = useRef(null);
 
@@ -188,6 +190,11 @@ const Navbar = () => {
             <TextMessage setTextMessageModal={setTextMessageModal} />
           </Modal>
         )}
+        {ticketRaiseModal && (
+          <Modal setOpen={setTicketRaiseModal} open={ticketRaiseModal}>
+            <TicketRaise setTicketRaiseModal={setTicketRaiseModal} />
+          </Modal>
+        )}
       </>
       <nav
         className={`sticky top-0 z-50 flex justify-between items-center ${
@@ -268,6 +275,19 @@ const Navbar = () => {
 									dispatch(changeActiveDate(selectedDate)); // Update Scheduler's activeDate
 								}}
 							/> */}
+
+              {currentUser?.roleId !== 3 && (
+                <button
+                  className={`${
+                    BASE_URL.includes("https://ace-server.1soft.co.uk")
+                      ? "bg-[#424242] text-[#C74949] border border-[#C74949]"
+                      : "bg-[#C74949] text-white border border-white"
+                  } px-4 py-2 rounded-lg uppercase text-xs sm:text-sm`}
+                  onClick={() => setTicketRaiseModal(true)}
+                >
+                  Ticket Raise
+                </button>
+              )}
 
               {currentUser?.roleId !== 3 && (
                 <button
@@ -535,6 +555,20 @@ const Navbar = () => {
             </div>
           )}
 
+          {currentUser?.roleId !== 3 && (
+            <div className="flex gap-4 mb-4">
+              <button
+                onClick={() => {
+                  setTicketRaiseModal(true);
+                  setMenuOpen(false);
+                  setNotificationOpen(false);
+                }}
+              >
+                Ticket Raise
+              </button>
+            </div>
+          )}
+
           {/* Google API Toggle */}
           {/* {currentUser?.roleId !== 3 && (
 						<div className='flex justify-start items-center gap-2 mb-4'>
@@ -597,6 +631,98 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+function TicketRaise({ setTicketRaiseModal }) {
+  // const isMobile = useMediaQuery("(max-width: 640px)");
+  // const isTablet = useMediaQuery("(min-width: 768px) and (max-width: 1023px)");
+  // const dispatch = useDispatch();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { isSubmitSuccessful, errors }, // Access form errors
+  } = useForm({
+    defaultValues: {
+      subject: "",
+      description: "",
+    },
+  });
+
+  const handleSubmitForm = async (data) => {
+    console.log("form Data", data);
+
+    // Dispatch search action only if some data is entered
+    if (data?.subject || data.description) {
+      // const response = await textMessageDirectly(data);
+      // if (response.status === "success") {
+      //   dispatch(openSnackbar("Message Send Successfully", "success"));
+      //   if (isMobile || isTablet) {
+      //     setActiveSectionMobileView("Scheduler");
+      //   }
+      //   setTicketRaiseModal(false);
+      // }
+      // Close the modal after search
+    } else {
+      console.log("Please fill form");
+    }
+  };
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset({
+        subject: "",
+        description: "",
+      });
+    }
+  }, [reset, isSubmitSuccessful]);
+
+  return (
+    <div className="bg-white p-6 rounded-lg shadow-lg w-[90vw] md:w-[45vw] sm:w-[25vw] max-w-md mx-auto">
+      <h2 className="text-2xl font-semibold mb-4 flex gap-1 items-center">
+        <AirplaneTicketOutlined />
+        Ticket Raise
+      </h2>
+      <form onSubmit={handleSubmit(handleSubmitForm)}>
+        <Box mt={2} display="flex" justifyContent="space-between" gap={2}>
+          <TextField
+            label="Subject"
+            fullWidth
+            error={!!errors.subject} // Show error if validation fails
+            helperText={errors.subject ? "Subject is Required" : ""}
+            {...register("subject", {
+              required: "Subject field is required",
+            })}
+          />
+        </Box>
+        <Box mt={2} display="flex" justifyContent="space-between" gap={2}>
+          <TextField
+            label="Description"
+            fullWidth
+            multiline
+            minRows={3}
+            error={!!errors.description}
+            helperText={errors.description ? "Description is required" : ""}
+            {...register("description", {
+              required: "Description field is required",
+            })}
+          />
+        </Box>
+
+        <div className="mt-4 flex gap-1">
+          <LongButton type="submit" color="bg-green-700">
+            Submit
+          </LongButton>
+          <LongButton
+            color="bg-red-700"
+            onClick={() => setTicketRaiseModal(false)} // Close modal on Cancel
+          >
+            Cancel
+          </LongButton>
+        </div>
+      </form>
+    </div>
+  );
+}
 
 function TextMessage({ setTextMessageModal }) {
   const isMobile = useMediaQuery("(max-width: 640px)");
