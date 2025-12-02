@@ -28,7 +28,11 @@ import LogoImg from "../assets/ace_taxis_v4.svg";
 import LongButton from "../components/BookingForm/LongButton";
 import SearchIcon from "@mui/icons-material/Search";
 import { useForm } from "react-hook-form";
-import { recordTurnDown, textMessageDirectly } from "../utils/apiReq";
+import {
+  recordTurnDown,
+  submitTicket,
+  textMessageDirectly,
+} from "../utils/apiReq";
 import { openSnackbar } from "../context/snackbarSlice";
 import PermPhoneMsgIcon from "@mui/icons-material/PermPhoneMsg";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
@@ -633,9 +637,7 @@ const Navbar = () => {
 export default Navbar;
 
 function TicketRaise({ setTicketRaiseModal }) {
-  // const isMobile = useMediaQuery("(max-width: 640px)");
-  // const isTablet = useMediaQuery("(min-width: 768px) and (max-width: 1023px)");
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -644,7 +646,7 @@ function TicketRaise({ setTicketRaiseModal }) {
   } = useForm({
     defaultValues: {
       subject: "",
-      description: "",
+      message: "",
     },
   });
 
@@ -652,15 +654,12 @@ function TicketRaise({ setTicketRaiseModal }) {
     console.log("form Data", data);
 
     // Dispatch search action only if some data is entered
-    if (data?.subject || data.description) {
-      // const response = await textMessageDirectly(data);
-      // if (response.status === "success") {
-      //   dispatch(openSnackbar("Message Send Successfully", "success"));
-      //   if (isMobile || isTablet) {
-      //     setActiveSectionMobileView("Scheduler");
-      //   }
-      //   setTicketRaiseModal(false);
-      // }
+    if (data?.subject || data.message) {
+      const response = await submitTicket(data?.subject, data?.message);
+      if (response.status === "success") {
+        dispatch(openSnackbar("Ticket Send Successfully", "success"));
+        setTicketRaiseModal(false);
+      }
       // Close the modal after search
     } else {
       console.log("Please fill form");
@@ -671,7 +670,7 @@ function TicketRaise({ setTicketRaiseModal }) {
     if (isSubmitSuccessful) {
       reset({
         subject: "",
-        description: "",
+        message: "",
       });
     }
   }, [reset, isSubmitSuccessful]);
@@ -696,14 +695,14 @@ function TicketRaise({ setTicketRaiseModal }) {
         </Box>
         <Box mt={2} display="flex" justifyContent="space-between" gap={2}>
           <TextField
-            label="Description"
+            label="Message"
             fullWidth
             multiline
             minRows={3}
-            error={!!errors.description}
-            helperText={errors.description ? "Description is required" : ""}
-            {...register("description", {
-              required: "Description field is required",
+            error={!!errors.message}
+            helperText={errors.message ? "Message is required" : ""}
+            {...register("message", {
+              required: "Message field is required",
             })}
           />
         </Box>

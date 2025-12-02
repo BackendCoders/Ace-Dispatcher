@@ -758,6 +758,13 @@ async function getQuoteHvsDriver(payload) {
   return await handlePostReq(URL, payload);
 }
 
+async function submitTicket(subject, message) {
+  const URL = `${BASE}/api/AdminUI/SubmitTicket?subject=${encodeURIComponent(
+    subject
+  )}&message=${encodeURIComponent(message)}`;
+  return await handlePostReq(URL, {});
+}
+
 export {
   getBookingData,
   makeBooking,
@@ -804,4 +811,5 @@ export {
   clearNotification,
   clearALLNotificationWithoutType,
   getQuoteHvsDriver,
+  submitTicket,
 };
