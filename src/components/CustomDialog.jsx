@@ -928,7 +928,7 @@ const BookingOption = ({ text, head, link }) => {
   const isPhoneNumber = head.toLowerCase().includes("phone") && text !== "NA";
   const phoneLink = isPhoneNumber ? `tel:${text}` : null;
   return (
-    <div className="flex flex-col sm:flex-row items-start mb-1 w-full">
+    <div className="flex sm:flex-row items-start mb-1 w-full">
       <p className="text-md font-medium pr-2 sm:whitespace-nowrap sm:w-[45%] 2xl:w-[35%] flex justify-start sm:justify-end sm:items-end">
         {head}:{" "}
       </p>
