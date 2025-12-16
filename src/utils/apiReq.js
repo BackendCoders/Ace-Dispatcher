@@ -758,11 +758,43 @@ async function getQuoteHvsDriver(payload) {
   return await handlePostReq(URL, payload);
 }
 
-async function submitTicket(subject, message) {
-  const URL = `${BASE}/api/AdminUI/SubmitTicket?subject=${encodeURIComponent(
-    subject
-  )}&message=${encodeURIComponent(message)}`;
-  return await handlePostReq(URL, {});
+async function submitTicket(formData) {
+  const accessToken = localStorage.getItem("authToken");
+  if (!accessToken) return {};
+  const URL = `${BASE}/api/AdminUI/SubmitTicket`;
+  try {
+    const response = await axios.post(URL, formData, {
+      headers: {
+        Accept: "*/*",
+        Authorization: `Bearer ${accessToken}`,
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        Pragma: "no-cache",
+        Expires: "0",
+      },
+    });
+    if (response.status >= 200 && response.status < 300) {
+      return {
+        ...response.data,
+        status: "success",
+      };
+    }
+
+    // fallback (rare case)
+    return {
+      status: "fail",
+      message: "Unexpected response status",
+    };
+  } catch (err) {
+    console.error("SubmitTicket Error:", err);
+
+    return {
+      ...err.response,
+      status: err.response?.status > 499 ? "error" : "fail",
+      message: `${
+        err.response?.status > 499 ? "server error" : "Failed"
+      } while submitting ticket`,
+    };
+  }
 }
 
 export {

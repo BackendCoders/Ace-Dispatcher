@@ -2,7 +2,7 @@
 
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import { Box, TextField, useMediaQuery, Switch } from "@mui/material";
+import { Box, TextField, useMediaQuery, Switch, Button } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import Modal from "../components/Modal";
 import CallIcon from "@mui/icons-material/Call";
@@ -42,7 +42,10 @@ import {
   refreshNotifications,
 } from "../context/notificationSlice";
 import { DropdownNotifications } from "../components/Notifications/DropdownNotifications";
-import { AirplaneTicketOutlined } from "@mui/icons-material";
+import {
+  AirplaneTicketOutlined,
+  CloudUploadOutlined,
+} from "@mui/icons-material";
 // import { formatDate } from '../utils/formatDate';
 const Navbar = () => {
   const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -638,10 +641,13 @@ export default Navbar;
 
 function TicketRaise({ setTicketRaiseModal }) {
   const dispatch = useDispatch();
+  const [file, setFile] = useState(null);
+  const [preview, setPreview] = useState(null);
   const {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { isSubmitSuccessful, errors }, // Access form errors
   } = useForm({
     defaultValues: {
@@ -650,19 +656,51 @@ function TicketRaise({ setTicketRaiseModal }) {
     },
   });
 
+  const attachment = watch("attachment");
+
+  useEffect(() => {
+    if (attachment && attachment[0]) {
+      const file = attachment[0];
+      setPreview(URL.createObjectURL(file));
+    }
+  }, [attachment]);
+
   const handleSubmitForm = async (data) => {
-    console.log("form Data", data);
+    const formData = new FormData();
+
+    formData.append("subject", data.subject);
+    formData.append("message", data.message);
+
+    if (file) {
+      formData.append("attachment", file);
+    }
 
     // Dispatch search action only if some data is entered
     if (data?.subject || data.message) {
-      const response = await submitTicket(data?.subject, data?.message);
+      const response = await submitTicket(formData);
       if (response.status === "success") {
         dispatch(openSnackbar("Ticket Send Successfully", "success"));
         setTicketRaiseModal(false);
+      } else {
+        setTicketRaiseModal(false);
+        dispatch(openSnackbar("Failed to submit ticket", "error"));
       }
       // Close the modal after search
     } else {
       console.log("Please fill form");
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const selected = e.target.files[0];
+    if (!selected) return;
+
+    setFile(selected);
+
+    if (selected.type.startsWith("image/")) {
+      setPreview(URL.createObjectURL(selected));
+    } else {
+      setPreview(null);
     }
   };
 
@@ -698,13 +736,81 @@ function TicketRaise({ setTicketRaiseModal }) {
             label="Message"
             fullWidth
             multiline
-            minRows={3}
+            minRows={2}
             error={!!errors.message}
             helperText={errors.message ? "Message is required" : ""}
             {...register("message", {
               required: "Message field is required",
             })}
           />
+        </Box>
+        <Box mt={2}>
+          <div
+            className="border-2 border-dashed border-gray-400 bg-white rounded-md p-4 text-center cursor-pointer
+               hover:border-blue-500 transition"
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => {
+              e.preventDefault();
+              const f = e.dataTransfer.files[0];
+              if (!f) return;
+              setFile(f);
+              if (f.type.startsWith("image/"))
+                setPreview(URL.createObjectURL(f));
+            }}
+          >
+            {/* If NO file selected */}
+            {!file && (
+              <div>
+                <CloudUploadOutlined
+                  style={{ fontSize: 40, color: "#60A5FA" }}
+                />
+
+                <p className="text-gray-600 text-sm font-medium">
+                  Drag & Drop to Upload File
+                </p>
+
+                <p className="text-gray-500 text-xs my-1">OR</p>
+
+                <Button variant="outlined" component="label" size="small">
+                  Browse File
+                  <input
+                    hidden
+                    type="file"
+                    accept="image/*,.pdf,.doc,.docx"
+                    {...register("attachment")}
+                    onChange={handleFileChange}
+                  />
+                </Button>
+              </div>
+            )}
+
+            {/* If file is selected → show preview in same box */}
+            {file && (
+              <div className="flex flex-col items-center">
+                {file.type.startsWith("image/") ? (
+                  <img
+                    src={preview}
+                    alt="Preview"
+                    className="w-24 h-24 object-cover rounded-md mb-2"
+                  />
+                ) : (
+                  <p className="text-gray-700 text-sm mb-2">📄 {file.name}</p>
+                )}
+
+                <Button
+                  variant="outlined"
+                  color="error"
+                  size="small"
+                  onClick={() => {
+                    setFile(null);
+                    setPreview(null);
+                  }}
+                >
+                  Remove File
+                </Button>
+              </div>
+            )}
+          </div>
         </Box>
 
         <div className="mt-4 flex gap-1">
