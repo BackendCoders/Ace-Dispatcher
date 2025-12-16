@@ -673,6 +673,9 @@ function TicketRaise({ setTicketRaiseModal }) {
 
     if (file) {
       formData.append("attachment", file);
+    } else {
+      // send empty value (Swagger "Send empty value")
+      formData.append("attachment", "");
     }
 
     // Dispatch search action only if some data is entered
