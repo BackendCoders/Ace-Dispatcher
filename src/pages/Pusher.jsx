@@ -1,4 +1,3 @@
-/** @format */
 import { useEffect, useState } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -174,6 +173,7 @@ export default function Push() {
 		// 	setSecondaryTab(3);
 		// }
 	};
+
 	useEffect(() => {
 		window.addEventListener('keydown', handleKeyDown);
 		return () => {
