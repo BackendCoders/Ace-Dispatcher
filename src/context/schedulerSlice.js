@@ -140,17 +140,17 @@ export function getRefreshedBookings() {
 			} else if (activeComplete && !activeAllocate) {
 				// Case 2: Show all bookings except those that have a userId
 				filteredBookings = response.bookings.filter(
-					(booking) => !booking?.userId
+					(booking) => !booking?.userId,
 				);
 			} else if (!activeComplete && activeAllocate) {
 				// Case 3: Show all bookings except those with status === 3
 				filteredBookings = response.bookings.filter(
-					(booking) => booking.status !== 3
+					(booking) => booking.status !== 3,
 				);
 			} else if (!activeComplete && !activeAllocate) {
 				// Case 4: Show bookings that have status !== 3 and no userId
 				filteredBookings = response.bookings.filter(
-					(booking) => booking.status !== 3 && !booking?.userId
+					(booking) => booking.status !== 3 && !booking?.userId,
 				);
 			}
 			// console.log('Filtered Bookings:', filteredBookings);
@@ -165,7 +165,7 @@ export function deleteSchedulerBooking(
 	cancelBlock,
 	fullName,
 	id,
-	cancelledOnArrival = false
+	cancelledOnArrival = false,
 ) {
 	return async (dispatch, getState) => {
 		// console.log({ cancelBlock, fullName, id });
@@ -285,7 +285,7 @@ export function handleCompleteBooking({
 				parkingCharge,
 				priceAccount,
 				driverPrice,
-			}
+			},
 			// activeTestMode
 		);
 

@@ -72,7 +72,7 @@ function createDateObject(today = new Date()) {
 		24 * 60 * 60 * 1000;
 	const formattedFrom = formatDate(new Date(fromDate));
 	const formattedTo = formatDate(
-		new Date(today).setHours(0, 0, 0, 0) + 24 * 60 * 60 * 1000
+		new Date(today).setHours(0, 0, 0, 0) + 24 * 60 * 60 * 1000,
 	);
 
 	return {
@@ -284,7 +284,7 @@ async function getAddressSuggestions(location) {
 					latitude: 51.0388,
 					longitude: -2.2799,
 				},
-			}
+			},
 		);
 		const suggestions = autocompleteResponse.data.suggestions;
 
@@ -314,7 +314,10 @@ async function getAccountList() {
 		const formatedData = Object.keys(data).map((el) => data[el]);
 		localStorage?.setItem(
 			'accounts',
-			JSON.stringify([{ accNo: 0, accountName: 'select-233' }, ...formatedData])
+			JSON.stringify([
+				{ accNo: 0, accountName: 'select-233' },
+				...formatedData,
+			]),
 		);
 		return [{ accNo: 0, accountName: 'select-233' }, ...formatedData];
 	}
@@ -520,6 +523,7 @@ async function bookingFindByTerm(queryField) {
 async function bookingFindByBookings(data) {
 	const URL = `${BASE}/api/Bookings/FindBookings`;
 	const reqData = {
+		booking_id: data.booking_id,
 		pickupAddress: data?.pickupAddress || '',
 		pickupPostcode: data?.pickupPostcode || '',
 		destinationAddress: data?.destinationAddress || '',
@@ -561,7 +565,7 @@ async function bookingPayment(data) {
 			pickup: data.pickup,
 			passenger: data.passenger,
 			date: data.date,
-		}
+		},
 	);
 
 	if (response.status === 'success')
@@ -581,9 +585,9 @@ async function bookingPayment(data) {
 async function sendPaymentLink(paymentDetail) {
 	const { telephone, pickup, bookingId, name, email, price } = paymentDetail;
 	const URL = `${BASE}/api/Bookings/PaymentLink?bookingId=${Number(
-		bookingId
+		bookingId,
 	)}&telephone=${telephone}&email=${email}&name=${name}&price=${Number(
-		price
+		price,
 	)}&pickup=${pickup}`;
 	return await handleGetReq(URL);
 }
@@ -591,7 +595,7 @@ async function sendPaymentLink(paymentDetail) {
 async function sendRefundLink(paymentDetail) {
 	const { bookingId, price } = paymentDetail;
 	const URL = `${BASE}/api/Bookings/RefundPayment?bookingId=${Number(
-		bookingId
+		bookingId,
 	)}&price=${Number(price)}`;
 	return await handleGetReq(URL);
 }
@@ -657,7 +661,7 @@ async function sendMsgToDriver(data) {
 
 async function sendMsgToAllDrivers(data) {
 	const URL = `${BASE}/api/AdminUI/SendMessageToAllDrivers?message=${encodeURIComponent(
-		data.message
+		data.message,
 	)}`;
 	return await handlePostReq(URL, {});
 }
@@ -671,7 +675,7 @@ async function getDuration(data) {
 	const URL = `${BASE}/api/Bookings/GetDuration?pickupDate=${
 		data?.pickupDate
 	}&pickupPostcode=${encodeURIComponent(
-		data?.pickupPostcode
+		data?.pickupPostcode,
 	)}&destinationPostcode=${data?.destinationPostcode}`;
 	try {
 		const response = await axios.get(URL, { headers: setHeaders() });
@@ -696,7 +700,7 @@ async function getDuration(data) {
 
 async function textMessageDirectly(data) {
 	const URL = `${BASE}/api/SmsQue/SendText?message=${encodeURIComponent(
-		data.message
+		data.message,
 	)}&telephone=${data.telephone}`;
 	return await handlePostReq(URL, null);
 }
@@ -724,7 +728,7 @@ async function mergeBookings(primaryBookingId, appendBookingId) {
 async function createCOAEntry(data) {
 	const { accno, journeyDate, passengerName, pickupAddress } = data;
 	const URL = `${BASE}/api/Bookings/CreateCOAEntry?accno=${accno}&journeyDate=${journeyDate}&passengerName=${encodeURIComponent(
-		passengerName
+		passengerName,
 	)}&pickupAddress=${encodeURIComponent(pickupAddress)}`;
 	return handlePostReq(URL, null);
 }
