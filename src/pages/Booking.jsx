@@ -58,7 +58,7 @@ function Booking({ bookingData, id, onBookingUpload }) {
 	const dispatch = useDispatch();
 	const callerId = useSelector((state) => state.caller);
 	const { isGoogleApiOn, isBookingOpenInEditMode } = useSelector(
-		(state) => state.bookingForm
+		(state) => state.bookingForm,
 	);
 	const { dateControl } = useSelector((state) => state.scheduler);
 
@@ -94,7 +94,12 @@ function Booking({ bookingData, id, onBookingUpload }) {
 	async function handleSubmit(e) {
 		e.preventDefault();
 
-		if (bookingData.price === 0) {
+		if (
+			bookingData.price === 0 &&
+			bookingData.scope === 1 &&
+			bookingData.accountNumber !== 9999
+		) {
+			console.log(bookingData.scope);
 			dispatch(openSnackbar('The Price of booking must not be zero', 'error'));
 
 			pickupDateTimeRef.current.focus();
@@ -144,8 +149,8 @@ function Booking({ bookingData, id, onBookingUpload }) {
 			dispatch(
 				openSnackbar(
 					'Booking does not specify the correct number of passengers',
-					'error'
-				)
+					'error',
+				),
 			);
 			return;
 		}
@@ -278,7 +283,7 @@ function Booking({ bookingData, id, onBookingUpload }) {
 
 			// Subtract totalDuration (converted from minutes to milliseconds)
 			const pickupDate = new Date(
-				arriveByDate.getTime() - totalDuration * 60000
+				arriveByDate.getTime() - totalDuration * 60000,
 			);
 
 			if (isNaN(pickupDate.getTime())) {
@@ -308,7 +313,7 @@ function Booking({ bookingData, id, onBookingUpload }) {
 
 			// Update state with both values
 			dispatch(
-				updateValueSilentMode(id, 'pickupDateTime', formatDate(pickupDate))
+				updateValueSilentMode(id, 'pickupDateTime', formatDate(pickupDate)),
 			);
 		}
 	}
@@ -358,18 +363,18 @@ function Booking({ bookingData, id, onBookingUpload }) {
 						updateValueSilentMode(
 							id,
 							'durationText',
-							String(quote.totalMinutes)
-						)
+							String(quote.totalMinutes),
+						),
 					);
 					dispatch(
 						updateValueSilentMode(
 							id,
 							'hours',
-							Math.floor(quote.totalMinutes / 60)
-						)
+							Math.floor(quote.totalMinutes / 60),
+						),
 					);
 					dispatch(
-						updateValueSilentMode(id, 'minutes', quote.totalMinutes % 60)
+						updateValueSilentMode(id, 'minutes', quote.totalMinutes % 60),
 					);
 					dispatch(setBookingQuote(quote));
 				} else {
@@ -419,11 +424,11 @@ function Booking({ bookingData, id, onBookingUpload }) {
 		if (currentUser && !currentUser?.fullName) return;
 		if (bookingData.bookingType === 'current') {
 			dispatch(
-				updateValueSilentMode(id, 'updatedByName', currentUser?.fullName)
+				updateValueSilentMode(id, 'updatedByName', currentUser?.fullName),
 			);
 		} else {
 			dispatch(
-				updateValueSilentMode(id, 'bookedByName', currentUser?.fullName)
+				updateValueSilentMode(id, 'bookedByName', currentUser?.fullName),
 			);
 		}
 	}, [isAuth, currentUser, bookingData.bookingType, dispatch, id]);
@@ -500,7 +505,7 @@ function Booking({ bookingData, id, onBookingUpload }) {
 
 		if (bookingData.pickupDateTime) {
 			const date = new Date(
-				getDateWithZeroTime(bookingData.pickupDateTime)
+				getDateWithZeroTime(bookingData.pickupDateTime),
 			).toISOString();
 			if (bookingData.formBusy) {
 				dispatch(changeActiveDate(date));
@@ -515,22 +520,22 @@ function Booking({ bookingData, id, onBookingUpload }) {
 			updateValueSilentMode(
 				id,
 				'hours',
-				Math.floor(bookingData.durationMinutes / 60)
-			)
+				Math.floor(bookingData.durationMinutes / 60),
+			),
 		);
 		dispatch(
 			updateValueSilentMode(
 				id,
 				'minutes',
-				Math.floor(bookingData.durationMinutes % 60)
-			)
+				Math.floor(bookingData.durationMinutes % 60),
+			),
 		);
 	}, [bookingData.durationMinutes, id, dispatch, bookingData.formBusy]);
 
 	function convertToOneHourLaterFromPickUp() {
 		const pickupDateTime = new Date(bookingData.pickupDateTime);
 		const oneHourLater = new Date(
-			pickupDateTime.getTime() + 1 * 60 * 60 * 1000
+			pickupDateTime.getTime() + 1 * 60 * 60 * 1000,
 		);
 		return formatDate(oneHourLater);
 	}
@@ -754,10 +759,10 @@ function Booking({ bookingData, id, onBookingUpload }) {
 										if (!bookingData.isASAP) {
 											// Calculate new pickupDateTime
 											const currentDateTime = new Date(
-												bookingData.pickupDateTime
+												bookingData.pickupDateTime,
 											);
 											currentDateTime.setMinutes(
-												currentDateTime.getMinutes() + 5
+												currentDateTime.getMinutes() + 5,
 											);
 											const newPickupDateTime = formatDate(currentDateTime);
 
@@ -791,9 +796,9 @@ function Booking({ bookingData, id, onBookingUpload }) {
 										!bookingData.returnBooking
 											? updateData(
 													'returnDateTime',
-													convertToOneHourLaterFromPickUp()
+													convertToOneHourLaterFromPickUp(),
 													// eslint-disable-next-line no-mixed-spaces-and-tabs
-											  )
+												)
 											: updateData('returnDateTime', null);
 										updateData('returnBooking', !bookingData.returnBooking);
 									}}
@@ -972,7 +977,7 @@ function Booking({ bookingData, id, onBookingUpload }) {
 											} else {
 												updateData(
 													'arriveBy',
-													formatDate(new Date(bookingData?.pickupDateTime))
+													formatDate(new Date(bookingData?.pickupDateTime)),
 												);
 											}
 											return newFlag;
@@ -1320,7 +1325,7 @@ function Booking({ bookingData, id, onBookingUpload }) {
 											setIsSendQuoteActive(true);
 										} else {
 											dispatch(
-												openSnackbar('Please fill phone or email', 'error')
+												openSnackbar('Please fill phone or email', 'error'),
 											);
 										}
 									}}
