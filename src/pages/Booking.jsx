@@ -99,7 +99,6 @@ function Booking({ bookingData, id, onBookingUpload }) {
 			bookingData.scope === 1 &&
 			bookingData.accountNumber !== 9999
 		) {
-			console.log(bookingData.scope);
 			dispatch(openSnackbar('The Price of booking must not be zero', 'error'));
 
 			pickupDateTimeRef.current.focus();
