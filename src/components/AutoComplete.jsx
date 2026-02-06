@@ -36,7 +36,6 @@ const Autocomplete = ({
 		async function fetchPoi() {
 			try {
 				const response = await getPoi(inputValue);
-				// const response = await getAddressSuggestions(inputValue);
 				setOptions(
 					response.map((item) => ({
 						label: item.address,
@@ -44,7 +43,7 @@ const Autocomplete = ({
 						// address: item.formatted_address.join(' '),
 						postcode: item.postcode,
 						...item,
-					}))
+					})),
 				);
 				setShowOptions(true);
 			} catch (error) {
@@ -68,16 +67,16 @@ const Autocomplete = ({
 							address: filteredAddress,
 							raw: item, // Retain the original address for reference if needed
 						};
-					})
+					}),
 				);
 				setShowOptions(true);
 			}
 		}
-		if (type === 'postal') {
-			getPostalID();
-		} else {
-			fetchPoi();
-		}
+		// if (type === 'postal') {
+		// 	getPostalID();
+		// } else {
+		// 	fetchPoi();
+		// }
 	}, [inputValue]);
 
 	useEffect(() => {
@@ -117,7 +116,7 @@ const Autocomplete = ({
 		} else if (e.key === 'ArrowDown') {
 			e.preventDefault();
 			setActiveOptionIndex((prevIndex) =>
-				Math.min(prevIndex + 1, options.length - 1)
+				Math.min(prevIndex + 1, options.length - 1),
 			);
 		} else if (e.key === 'ArrowUp') {
 			e.preventDefault();
