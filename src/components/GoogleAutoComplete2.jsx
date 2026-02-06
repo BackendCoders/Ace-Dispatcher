@@ -47,12 +47,14 @@ function GoogleAutoComplete({
 							label: cleanedAddress, // Use the address directly
 							id: suggestion.id,
 							address: cleanedAddress || 'Unknown Address',
-							postcode: (suggestion?.label?.match(
-								/[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}$/i,
-							) || [''])[0],
+							postcode:
+								(suggestion?.label?.match(
+									/[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}$/i,
+								) || [''])[0] || suggestion.secondaryText,
 							source: suggestion.type,
 						};
 					});
+					// console.log({ addressFormatted });
 					setSuggestions(addressFormatted);
 
 					//Store the suggestions in the cache

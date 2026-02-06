@@ -303,12 +303,12 @@ async function getAddressSuggestions(location) {
 }
 
 async function getAddress(query, token) {
-	const URL = `${BASE}/api/address/dispatchsearch?q={${encodeURIComponent(query)}&sessionToken=${encodeURIComponent(token)}`;
+	const URL = `${BASE}/api/address/dispatchsearch?q=${query}&sessionToken=${token}`;
 	return await handleGetReq(URL);
 }
 
 async function resolveAddress(id, token) {
-	const URL = `${BASE}/api/address/resolve?id=${encodeURIComponent(id)}&sessionToken=${encodeURIComponent(token)}`;
+	const URL = `${BASE}/api/address/resolve?id=${id}&sessionToken=${token}`;
 	return await handleGetReq(URL);
 }
 
