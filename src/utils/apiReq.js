@@ -312,6 +312,11 @@ async function resolveAddress(id, token) {
 	return await handleGetReq(URL);
 }
 
+async function getAddressByPostCode(postcode) {
+	const URL = `${BASE}/api/Address/PostcodeLookup?postcode=${postcode}`;
+	return await handleGetReq(URL);
+}
+
 async function getAllDrivers() {
 	const URL = `${BASE}/api/UserProfile/ListUsers`;
 	return await handleGetReq(URL);
@@ -821,6 +826,7 @@ export {
 	getAllDrivers,
 	getAddress,
 	resolveAddress,
+	getAddressByPostCode,
 	getPostal,
 	getAccountList,
 	updateBooking,
