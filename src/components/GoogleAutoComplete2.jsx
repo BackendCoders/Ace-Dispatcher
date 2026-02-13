@@ -43,10 +43,13 @@ function GoogleAutoComplete({
 
 					const addressFormatted = addressSuggestions.map((suggestion) => {
 						const cleanedAddress = suggestion.label;
+
+						console.log(suggestion);
 						return {
 							label: cleanedAddress, // Use the address directly
 							id: suggestion.id,
 							address: cleanedAddress || 'Unknown Address',
+							name: suggestion.name || null,
 							postcode:
 								(suggestion?.label?.match(
 									/[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}$/i,
