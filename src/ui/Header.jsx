@@ -1094,7 +1094,8 @@ function SearchModal({ setOpenSearch }) {
 			newinputData.destinationPostcode ||
 			newinputData.passenger ||
 			newinputData.phoneNumber ||
-			newinputData.details
+			newinputData.details ||
+			newinputData.booking_id
 		) {
 			dispatch(setSearchKeywords(newinputData));
 			dispatch(handleSearchBooking(newinputData));
