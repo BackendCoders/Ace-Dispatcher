@@ -84,8 +84,7 @@ function GoogleAutoComplete({
 			const sessionToken = getToken();
 			const fullDetails = await resolveAddress(suggestion.id, sessionToken);
 			if (fullDetails) {
-				// selectedAddress =
-				// 	fullDetails.formatted_address.join(', ') || 'Unknown Address';
+				selectedAddress = fullDetails.formattedAddress;
 				selectedPostcode = fullDetails.postcode || 'No Postcode';
 			}
 		} catch (error) {
