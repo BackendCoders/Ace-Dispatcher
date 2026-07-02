@@ -28,6 +28,7 @@ const Autocomplete = ({
 		setInputValue(value);
 	}, [value]);
 	useEffect(() => {
+		if (!focus) return;
 		if (inputValue.length <= 3) {
 			setOptions([]);
 			return;
